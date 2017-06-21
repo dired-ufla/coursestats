@@ -55,9 +55,9 @@ $url_filter_repository_usage_type = new moodle_url($CFG->wwwroot . '/report/cour
 $url_filter_activities_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . ACTIVITY_USAGE_TYPE);
 
 $table->data = array(
-	array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses . ' (' . ($only_forum_courses/$amount_of_courses)*100 . '%)'),
-	array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . ($only_repository_courses/$amount_of_courses)*100 . '%)'),
-	array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . ($activity_courses/$amount_of_courses)*100 . '%)')
+	array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses . ' (' . number_format(($only_forum_courses/$amount_of_courses)*100, 2) . '%)'),
+	array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . number_format(($only_repository_courses/$amount_of_courses)*100, 2) . '%)'),
+	array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . number_format(($activity_courses/$amount_of_courses)*100, 2) . '%)')
 );
 echo html_writer::table($table);
 

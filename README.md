@@ -17,4 +17,5 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 - v1.0: this is the first version of the plugin.
 - v1.1: this version includes filters to usage types, such as, forum, repository and activities. 
+- v1.2: this version fixes an issue related to number format. 
 
