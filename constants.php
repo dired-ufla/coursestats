@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+define('ALL_USAGE_TYPE', 'all');
 define('NULL_USAGE_TYPE', 'null');
 define('FORUM_USAGE_TYPE', 'forum');
 define('REPOSITORY_USAGE_TYPE', 'repository');

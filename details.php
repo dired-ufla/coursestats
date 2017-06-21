@@ -30,6 +30,7 @@ require(__DIR__. '/constants.php');
 // page parameters
 $page    = optional_param('page', 0, PARAM_INT);
 $perpage = optional_param('perpage', 30, PARAM_INT);    // how many per page
+$usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
 
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
@@ -42,10 +43,15 @@ echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' . $
 $baseurl = new moodle_url('details.php', array('perpage' => $perpage));
 echo $OUTPUT->paging_bar(5, $page, $perpage, $baseurl);
 
+$whereclause = ' ';
+if ($usagetype != ALL_USAGE_TYPE) {
+	$whereclause = ' WHERE cs.curr_usage_type = \'' . $usagetype . '\'';
+}
+
 $sql = "SELECT co.shortname, cs.courseid, cs.prev_usage_type, cs.curr_usage_type, cs.last_update  
         FROM {report_coursestats} cs 
-        JOIN {course} co ON co.id = cs.courseid
-        ORDER BY co.shortname";
+        JOIN {course} co ON co.id = cs.courseid" . $whereclause .
+        "ORDER BY co.shortname";
 $rs = $DB->get_recordset_sql($sql, array(), $page*$perpage, $perpage);
 
 

@@ -49,10 +49,15 @@ if (class_exists('core\chart_pie')) {
 } 
 $table = new html_table();
 $table->head = array('', get_string('lb_chart_series', 'report_coursestats'));
+
+$url_filter_forum_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . FORUM_USAGE_TYPE);
+$url_filter_repository_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . REPOSITORY_USAGE_TYPE);
+$url_filter_activities_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . ACTIVITY_USAGE_TYPE);
+
 $table->data = array(
-	array(get_string('lb_forum_usage', 'report_coursestats'), $only_forum_courses . ' (' . ($only_forum_courses/$amount_of_courses)*100 . '%)'),
-	array(get_string('lb_repository_usage', 'report_coursestats'), $only_repository_courses . ' (' . ($only_repository_courses/$amount_of_courses)*100 . '%)'),
-	array(get_string('lb_activity_usage', 'report_coursestats'), $activity_courses . ' (' . ($activity_courses/$amount_of_courses)*100 . '%)')
+	array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses . ' (' . ($only_forum_courses/$amount_of_courses)*100 . '%)'),
+	array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . ($only_repository_courses/$amount_of_courses)*100 . '%)'),
+	array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . ($activity_courses/$amount_of_courses)*100 . '%)')
 );
 echo html_writer::table($table);
 
