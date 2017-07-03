@@ -27,7 +27,7 @@ require(__DIR__. '/../constants.php');
 
 class report_coursestats_observer {	
     public static function forum_discussion_created(\mod_forum\event\discussion_created $event) {
-		global $DB;
+	global $DB;
 		
 		// Check if the forum instance is for announcements 
 		$result = $DB->get_record(FORUM_TABLE_NAME, array('id'=>$event->other['forumid']));
@@ -45,7 +45,7 @@ class report_coursestats_observer {
 				$DB->insert_record(PLUGIN_TABLE_NAME, $record);
 			}
 		}
-    }
+	}
 	
 	public static function course_module_created(\core\event\course_module_created $event) {
 		global $DB;
