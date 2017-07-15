@@ -33,6 +33,11 @@ $string['lb_last_update'] = 'Última atualização';
 
 $string['lb_null_usage'] = 'Nenhum';
 $string['lb_forum_usage'] = 'Apenas fórum';
+$string['lb_forum_usage_help'] = 'O curso está sendo usado apenas para comunicação entre professor e alunos, por meio do **Fórum de Notcias**.';
 $string['lb_repository_usage'] = 'Apenas repositório';
+$string['lb_repository_usage_help'] = 'O curso está sendo usado apenas como um repositório de arquivos. Ou seja, o professor disponibilizou 
+  apenas **arquivos**, **pasta** ou **URLs** neste curso.';
 $string['lb_activity_usage'] = 'Atividades';
+$string['lb_activity_usage_help'] = 'O curso está sendo efetivamente usado. Ou seja, o professor criou tipos de módulos interessantes
+  tais como **Fórum**, **Questionário**, **Quiz**, **Tarefas**, entre outros neste curso.';
 $string['lb_chart_series'] = 'Estatísticas de uso de cursos';
