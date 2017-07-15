@@ -33,6 +33,11 @@ $string['lb_last_update'] = 'Last update';
 
 $string['lb_null_usage'] = 'None';
 $string['lb_forum_usage'] = 'Only Forum';
+$string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the **Announcements Forum**.';
 $string['lb_repository_usage'] = 'Only Repository';
+$string['lb_repository_usage_help'] = 'The course is being used only as a file repository. That is, the teacher has created just 
+  **file**, **folder** or **URL** modules in this course.';
 $string['lb_activity_usage'] = 'Activities';
+$string['lb_activity_usage_help'] = 'The course is being effectively used. That is, the teacher has created exciting modules types 
+  such as **Forum**, **Quiz**, **Assignments**, **Questionnaries**, among other in this course.';
 $string['lb_chart_series'] = 'Course Usage Statistics';
