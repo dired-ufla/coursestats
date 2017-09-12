@@ -3,7 +3,7 @@ In our institution (Federal University of Lavras, Lavras, Brazil - in portuguese
 
 In our preliminary research, we have found three main types of usage:
 
-- The course is simply used as a communication channel by means of the announcement **forum**;
+- The course is simply used as a communication channel by means of the announcement **forum** (forum usage is not recorded unless it's a discussion created in the news forum);
 
 - The course is used as either a **repository** of files or a repository of URLs to external resources; and
 
@@ -12,6 +12,8 @@ In our preliminary research, we have found three main types of usage:
 We believe that the knowledge about the courses usage types is important because this may improve the strategies of training and information dissimination about the resources available in Moodle. However, gathering the statistics of courses usage is not a trivial task, mainly when this is performed in a manual way; the last time we did that, it tooks us 16 hours of our precious time ;).
 
 Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin that helps the admin to known how the courses are being used by users (e.g. as forum, as file repositories or as activities repositories). Feel free to use and contribute to this project by improving the plugin functionality or letting us to know about possible bugs existing in its code. You can see some screenshots at https://moodle.org/plugins/report_coursestats.
+
+**Important**: this plugin only records information after it's been installed.
 
 ## Releases
 
