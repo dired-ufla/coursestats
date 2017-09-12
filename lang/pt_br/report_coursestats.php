@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Estatísticas de Uso dos Cursos';
+$string['pluginname'] = 'Estatísticas de uso dos cursos';
 $string['link_details'] = 'Mais detalhes';
 $string['link_back'] = 'Voltar';
 $string['lb_course_name'] = 'Nome do curso';
@@ -33,11 +33,13 @@ $string['lb_last_update'] = 'Última atualização';
 
 $string['lb_null_usage'] = 'Nenhum';
 $string['lb_forum_usage'] = 'Apenas fórum';
-$string['lb_forum_usage_help'] = 'O curso está sendo usado apenas para comunicação entre professor e alunos, por meio do **Fórum de Notcias**.';
+$string['lb_forum_usage_help'] = 'O curso está sendo usado apenas para comunicação entre professor e alunos, por meio do <b>Fórum de Notícias</b>.';
 $string['lb_repository_usage'] = 'Apenas repositório';
 $string['lb_repository_usage_help'] = 'O curso está sendo usado apenas como um repositório de arquivos. Ou seja, o professor disponibilizou 
-  apenas **arquivos**, **pasta** ou **URLs** neste curso.';
+  apenas <b>arquivos</b>, <b>pasta</b> ou <b>URLs</b> neste curso.';
 $string['lb_activity_usage'] = 'Atividades';
 $string['lb_activity_usage_help'] = 'O curso está sendo efetivamente usado. Ou seja, o professor criou tipos de módulos interessantes
-  tais como **Fórum**, **Questionário**, **Quiz**, **Tarefas**, entre outros neste curso.';
+  tais como <b>Fórum</b>, <b>Questionário</b>, <b>Quiz</b>, <b>Tarefas</b>, entre outros neste curso.';
 $string['lb_chart_series'] = 'Estatísticas de uso de cursos';
+$string['lb_there_are_no_courses_stats'] = 'Não há estatísticas de uso a serem apresentadas no momento!';
+

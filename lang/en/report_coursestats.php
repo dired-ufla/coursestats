@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Courses Usage Statistics';
+$string['pluginname'] = 'Courses usage statistics';
 $string['link_details'] = 'More info';
 $string['link_back'] = 'Back';
 $string['lb_course_name'] = 'Course name';
@@ -33,11 +33,13 @@ $string['lb_last_update'] = 'Last update';
 
 $string['lb_null_usage'] = 'None';
 $string['lb_forum_usage'] = 'Only Forum';
-$string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the **Announcements Forum**.';
+$string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the <b>Announcements Forum</b>.';
 $string['lb_repository_usage'] = 'Only Repository';
 $string['lb_repository_usage_help'] = 'The course is being used only as a file repository. That is, the teacher has created just 
-  **file**, **folder** or **URL** modules in this course.';
+  <b>File</b>, <b>Folder</b> or <b>URL</b> modules in this course.';
 $string['lb_activity_usage'] = 'Activities';
 $string['lb_activity_usage_help'] = 'The course is being effectively used. That is, the teacher has created exciting modules types 
-  such as **Forum**, **Quiz**, **Assignments**, **Questionnaries**, among other in this course.';
+  such as <b>Forum</b>, <b>Quiz</b>, <b>Assignments</b>, <b>Questionnaries</b>, among other in this course.';
 $string['lb_chart_series'] = 'Course Usage Statistics';
+$string['lb_there_are_no_courses_stats'] = 'There are no courses statistics to be presented at this moment!';
+
