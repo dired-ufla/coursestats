@@ -61,14 +61,13 @@ if ($amount_of_courses > 0) {
 		array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . number_format(($only_repository_courses/$amount_of_courses)*100, 2) . '%)'),
 		array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . number_format(($activity_courses/$amount_of_courses)*100, 2) . '%)')
 	);
-	echo html_writer::tag('br', '');
+	echo html_writer::table($table);
 	echo html_writer::start_tag('ul'). 
 			html_writer::tag('li', get_string('lb_forum_usage', 'report_coursestats') . ': ' . get_string('lb_forum_usage_help', 'report_coursestats')) . 
 			html_writer::tag('li', get_string('lb_repository_usage', 'report_coursestats') . ': ' . get_string('lb_repository_usage_help', 'report_coursestats')) . 
 			html_writer::tag('li', get_string('lb_activity_usage', 'report_coursestats') . ': ' . get_string('lb_activity_usage_help', 'report_coursestats')) . 
 		html_writer::end_tag('ul');
 	
-	echo html_writer::table($table);
 		
 } else {
 	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats'), array('align' => 'center'));
