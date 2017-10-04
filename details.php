@@ -31,10 +31,11 @@ require(__DIR__. '/constants.php');
 $page    = optional_param('page', 0, PARAM_INT);
 $perpage = optional_param('perpage', 30, PARAM_INT);    // how many per page
 $usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
+$category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
+$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?category=' . $category);
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
 echo $OUTPUT->header();
@@ -44,11 +45,15 @@ $baseurl = new moodle_url('details.php', array('perpage' => $perpage, 'usagetype
 echo $OUTPUT->paging_bar(5, $page, $perpage, $baseurl);
 
 $whereclause = ' ';
-if ($usagetype != ALL_USAGE_TYPE) {
+if ($usagetype != ALL_USAGE_TYPE and $category == ALL_CATEGORIES) {
 	$whereclause = ' WHERE cs.curr_usage_type = \'' . $usagetype . '\'';
+} else if ($usagetype != ALL_USAGE_TYPE and $category != ALL_CATEGORIES) {
+	$whereclause = ' WHERE cs.curr_usage_type = \'' . $usagetype . '\' and cs.categoryid = ' . $category . ' ';
+} else if ($usagetype == ALL_USAGE_TYPE and $category != ALL_CATEGORIES) { 
+	$whereclause = ' WHERE cs.categoryid = ' . $category . ' ';
 }
 
-$sql = "SELECT co.shortname, cs.courseid, cs.prev_usage_type, cs.curr_usage_type, cs.last_update  
+$sql = "SELECT co.shortname, cs.courseid, cs.prev_usage_type, cs.curr_usage_type, cs.last_update, cs.categoryid
         FROM {report_coursestats} cs 
         JOIN {course} co ON co.id = cs.courseid" . $whereclause .
         "ORDER BY co.shortname";

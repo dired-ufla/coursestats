@@ -30,7 +30,8 @@ $string['lb_course_name'] = 'Course name';
 $string['lb_prev_usage_type'] = 'Previous usage type';
 $string['lb_curr_usage_type'] = 'Current usage type';
 $string['lb_last_update'] = 'Last update';
-
+$string['lb_choose_category'] = 'Choose a category';
+$string['lb_all_categories'] = 'All categories';
 $string['lb_null_usage'] = 'None';
 $string['lb_forum_usage'] = 'Only Forum';
 $string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the <b>Announcements Forum</b>.';

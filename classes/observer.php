@@ -27,7 +27,7 @@ require(__DIR__. '/../constants.php');
 
 class report_coursestats_observer {	
     public static function forum_discussion_created(\mod_forum\event\discussion_created $event) {
-	global $DB;
+		global $DB;
 		
 		// Check if the forum instance is for announcements 
 		$result = $DB->get_record(FORUM_TABLE_NAME, array('id'=>$event->other['forumid']));
@@ -37,11 +37,15 @@ class report_coursestats_observer {
 			 * If yes, a record is created with usage type classified as 'forum'. 
 			 */
 			if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
+				// Get the course, based on its id
+				$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
+				
 				$record = new stdClass();
 				$record->courseid = $event->courseid;
 				$record->prev_usage_type = NULL_USAGE_TYPE;
 				$record->curr_usage_type = FORUM_USAGE_TYPE;
 				$record->last_update = time();
+				$record->categoryid = $course->category;
 				$DB->insert_record(PLUGIN_TABLE_NAME, $record);
 			}
 		}
@@ -62,11 +66,15 @@ class report_coursestats_observer {
 		}
 		       	
        	if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
+			// Get the course, based on its id
+			$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
+				
 			$record = new stdClass();
 			$record->courseid = $event->courseid;
 			$record->prev_usage_type = NULL_USAGE_TYPE;
 			$record->curr_usage_type = $usage_type;			 
 			$record->last_update =  time();
+			$record->categoryid = $course->category;
 			$DB->insert_record(PLUGIN_TABLE_NAME, $record);
 		} else {
 			$result = $DB->get_record(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid));
