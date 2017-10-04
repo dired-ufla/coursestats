@@ -32,14 +32,14 @@ class report_coursestats_observer {
 		// Check if the forum instance is for announcements 
 		$result = $DB->get_record(FORUM_TABLE_NAME, array('id'=>$event->other['forumid']));
 		if ($result->type === NEWS_FORUM_NAME) {
+			// Get the course, based on its id
+			$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
+			
 			/* 
 			 * Check if there is no records for the 'courseid' in the table 'report_coursestats'.
 			 * If yes, a record is created with usage type classified as 'forum'. 
 			 */
 			if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
-				// Get the course, based on its id
-				$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
-				
 				$record = new stdClass();
 				$record->courseid = $event->courseid;
 				$record->prev_usage_type = NULL_USAGE_TYPE;
@@ -47,7 +47,11 @@ class report_coursestats_observer {
 				$record->last_update = time();
 				$record->categoryid = $course->category;
 				$DB->insert_record(PLUGIN_TABLE_NAME, $record);
-			}
+			} else {
+				$result = $DB->get_record(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid));
+				$result->categoryid = $course->category;
+				$DB->update_record(PLUGIN_TABLE_NAME, $result); 
+			}					
 		}
 	}
 	
@@ -64,11 +68,11 @@ class report_coursestats_observer {
 		} else {
 			$usage_type	= ACTIVITY_USAGE_TYPE;
 		}
+		
+		// Get the course, based on its id
+		$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
 		       	
        	if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
-			// Get the course, based on its id
-			$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
-				
 			$record = new stdClass();
 			$record->courseid = $event->courseid;
 			$record->prev_usage_type = NULL_USAGE_TYPE;
@@ -82,6 +86,7 @@ class report_coursestats_observer {
 				($result->curr_usage_type === REPOSITORY_USAGE_TYPE and $usage_type === ACTIVITY_USAGE_TYPE)) {
 				$result->prev_usage_type = $result->curr_usage_type;
 				$result->curr_usage_type = $usage_type;		
+				$result->categoryid = $course->category;
 				$result->last_update =  time();
 				$DB->update_record(PLUGIN_TABLE_NAME, $result); 
 			}			
