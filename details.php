@@ -41,7 +41,7 @@ $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' . $link);
 
-$baseurl = new moodle_url('details.php', array('perpage' => $perpage, 'usagetype' => $usagetype));
+$baseurl = new moodle_url('details.php', array('perpage' => $perpage, 'usagetype' => $usagetype, 'category' => $category));
 echo $OUTPUT->paging_bar(5, $page, $perpage, $baseurl);
 
 $whereclause = ' ';
