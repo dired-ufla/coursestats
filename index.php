@@ -31,7 +31,7 @@ admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>
 
 echo $OUTPUT->header();
 
-$result = $DB->get_records(COURSE_CATEGORIES_TABLE_NAME);
+$result = $DB->get_records(COURSE_CATEGORIES_TABLE_NAME, null, 'name');
 		
 $table = new html_table();
 
