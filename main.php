@@ -40,7 +40,8 @@ if ($category == ALL_CATEGORIES) {
 	$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE, 'categoryid'=>$category));
 	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
 	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE, 'categoryid'=>$category));
-	$catname = ($DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category)))->name;
+	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
+	$catname = $cat->name;
 }
 
 $amount_of_courses = $only_forum_courses +  $only_repository_courses + $activity_courses;
