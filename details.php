@@ -29,7 +29,7 @@ require(__DIR__. '/constants.php');
 
 // page parameters
 $page    = optional_param('page', 0, PARAM_INT);
-$perpage = optional_param('perpage', 30, PARAM_INT);    // how many per page
+$perpage = optional_param('perpage', 25, PARAM_INT);    // how many per page
 $usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 

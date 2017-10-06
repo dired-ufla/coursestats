@@ -76,7 +76,7 @@ if ($amount_of_courses > 0) {
 	echo html_writer::table($table);
 	echo html_writer::tag('p', get_string('lb_courses_amount', 'report_coursestats') . ": " . $amount_of_courses);
 } else {
-	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats'), array('align' => 'center'));
+	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats') . ' (' .$link . ')', array('align' => 'center'));
 }
 
 echo $OUTPUT->footer();
