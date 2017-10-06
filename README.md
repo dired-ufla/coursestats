@@ -17,6 +17,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v2.1: this version fixes an issue related to plugin upgrade. 
 - v2.0: this version allows the user filtering data based on course categories. 
 - v1.3: this version fixes an issue related to division by zero error and improves the documentation about the plugin. 
 - v1.2: this version fixes an issue related to number format. 
