@@ -52,7 +52,7 @@ $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 echo $OUTPUT->header();
 
 if ($amount_of_courses > 0) {
-	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' . $link);
+	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' . $catname . ') - ' . $link);
 
 	if (class_exists('core\chart_pie')) {
 		$data = new core\chart_series(get_string('lb_chart_series', 'report_coursestats'), [$only_forum_courses, $only_repository_courses, $activity_courses]);
@@ -63,25 +63,18 @@ if ($amount_of_courses > 0) {
 	} 
 
 	$table = new html_table();
-	$table->head = array('', get_string('lb_chart_series', 'report_coursestats') . ' - ' . $catname);
-
+	
 	$url_filter_forum_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . FORUM_USAGE_TYPE . '&category=' . $category);
 	$url_filter_repository_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . REPOSITORY_USAGE_TYPE . '&category=' . $category);
 	$url_filter_activities_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . ACTIVITY_USAGE_TYPE . '&category=' . $category);
 
 	$table->data = array(
-		array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses . ' (' . number_format(($only_forum_courses/$amount_of_courses)*100, 2) . '%)'),
-		array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . number_format(($only_repository_courses/$amount_of_courses)*100, 2) . '%)'),
-		array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . number_format(($activity_courses/$amount_of_courses)*100, 2) . '%)')
+		array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses . ' (' . number_format(($only_forum_courses/$amount_of_courses)*100, 2) . '%)', get_string('lb_forum_usage_help', 'report_coursestats')),
+		array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses . ' (' . number_format(($only_repository_courses/$amount_of_courses)*100, 2) . '%)', get_string('lb_repository_usage_help', 'report_coursestats')),
+		array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses . ' (' . number_format(($activity_courses/$amount_of_courses)*100, 2) . '%)', get_string('lb_activity_usage_help', 'report_coursestats'))
 	);
 	echo html_writer::table($table);
-	echo html_writer::start_tag('ul'). 
-			html_writer::tag('li', get_string('lb_forum_usage', 'report_coursestats') . ': ' . get_string('lb_forum_usage_help', 'report_coursestats')) . 
-			html_writer::tag('li', get_string('lb_repository_usage', 'report_coursestats') . ': ' . get_string('lb_repository_usage_help', 'report_coursestats')) . 
-			html_writer::tag('li', get_string('lb_activity_usage', 'report_coursestats') . ': ' . get_string('lb_activity_usage_help', 'report_coursestats')) . 
-		html_writer::end_tag('ul');
-	
-		
+	echo html_writer::tag('p', get_string('lb_courses_amount', 'report_coursestats') . ": " . $amount_of_courses);
 } else {
 	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats'), array('align' => 'center'));
 }

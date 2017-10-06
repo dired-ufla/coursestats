@@ -34,6 +34,7 @@ $string['lb_choose_category'] = 'Escolha uma categoria';
 $string['lb_all_categories'] = 'Todas';
 $string['lb_null_usage'] = 'Nenhum';
 $string['lb_forum_usage'] = 'Apenas fórum';
+$string['lb_courses_amount'] = 'Total de cursos';
 $string['lb_forum_usage_help'] = 'O curso está sendo usado apenas para comunicação entre professor e alunos, por meio do <b>Fórum de Notícias</b>.';
 $string['lb_repository_usage'] = 'Apenas repositório';
 $string['lb_repository_usage_help'] = 'O curso está sendo usado apenas como um repositório de arquivos. Ou seja, o professor disponibilizou 
