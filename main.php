@@ -36,12 +36,14 @@ if ($category == ALL_CATEGORIES) {
 	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE));
 	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE));
 	$catname = get_string('lb_all_categories', 'report_coursestats');
+	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME);
 } else {
 	$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE, 'categoryid'=>$category));
 	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
 	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE, 'categoryid'=>$category));
 	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
+	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('id'=>$category));
 }
 
 $amount_of_courses = $only_forum_courses +  $only_repository_courses + $activity_courses;
@@ -75,6 +77,7 @@ if ($amount_of_courses > 0) {
 	);
 	echo html_writer::table($table);
 	echo html_writer::tag('p', get_string('lb_courses_amount', 'report_coursestats') . ": " . $amount_of_courses);
+	echo html_writer::tag('p', get_string('lb_courses_created_amount', 'report_coursestats') . ": " . $amount_of_created_courses);
 } else {
 	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats') . ' (' .$link . ')', array('align' => 'center'));
 }
