@@ -39,7 +39,9 @@ $string['lb_choose_category'] = 'Escolha uma categoria';
 $string['lb_all_categories'] = 'Todas';
 $string['lb_null_usage'] = 'Nenhum';
 $string['lb_forum_usage'] = 'Apenas fórum';
-$string['lb_courses_stats'] = '<b>Total de cursos utilizados/criados</b>';
+$string['lb_used_courses'] = 'Cursos utilizados';
+$string['lb_not_used_courses'] = 'Cursos não utilizados';
+$string['lb_courses_stats'] = '<b>Porcentagem de cursos utilizados</b>';
 $string['lb_courses_created_amount'] = '<b>Total de cursos criados</b>';
 $string['lb_forum_usage_help'] = 'Cursos que estão sendo utilizados apenas para comunicação entre professor e alunos, por meio do <b>Fórum de Notícias</b>.';
 $string['lb_repository_usage'] = 'Apenas repositório';
@@ -48,6 +50,7 @@ $string['lb_repository_usage_help'] = 'Cursos que estão sendo utilizados apenas
 $string['lb_activity_usage'] = 'Atividades';
 $string['lb_activity_usage_help'] = 'Cursos que estão sendo efetivamente utilizados. Ou seja, o professor criou tipos de módulos interessantes
   tais como <b>Fórum</b>, <b>Questionário</b>, <b>Quiz</b>, <b>Tarefas</b>, entre outros nestes cursos.';
-$string['lb_chart_series'] = 'Estatísticas de uso de cursos';
+$string['lb_chart_series_types_of_use'] = 'Estatísticas de uso de cursos';
+$string['lb_chart_series_used_courses'] = 'Estatísticas geral de cursos';
 $string['lb_there_are_no_courses_stats'] = 'Não há estatísticas de uso a serem apresentadas no momento!';
 

@@ -39,7 +39,9 @@ $string['lb_choose_category'] = 'Choose a category';
 $string['lb_all_categories'] = 'All categories';
 $string['lb_null_usage'] = 'None';
 $string['lb_forum_usage'] = 'Only Forum';
-$string['lb_courses_stats'] = '<b>Amount of used/created courses</b>';
+$string['lb_used_courses'] = 'Used courses';
+$string['lb_not_used_courses'] = 'Not used courses';
+$string['lb_courses_stats'] = '<b>Percentage of used courses</b>';
 $string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the <b>Announcements Forum</b>.';
 $string['lb_repository_usage'] = 'Only Repository';
 $string['lb_repository_usage_help'] = 'The course is being used only as a file repository. That is, the teacher has created just 
@@ -47,6 +49,7 @@ $string['lb_repository_usage_help'] = 'The course is being used only as a file r
 $string['lb_activity_usage'] = 'Activities';
 $string['lb_activity_usage_help'] = 'The course is being effectively used. That is, the teacher has created exciting modules types 
   such as <b>Forum</b>, <b>Quiz</b>, <b>Assignments</b>, <b>Questionnaries</b>, among other in this course.';
-$string['lb_chart_series'] = 'Course Usage Statistics';
+$string['lb_chart_series_types_of_use'] = 'Course Usage Statistics';
+$string['lb_chart_series_used_courses'] = 'General Courses Statistics';
 $string['lb_there_are_no_courses_stats'] = 'There are no courses statistics to be presented at this moment!';
 

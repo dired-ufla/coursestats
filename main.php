@@ -56,17 +56,26 @@ echo $OUTPUT->header();
 if ($amount_of_courses > 0) {
 	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' . $catname . ') - ' . $link);
 
-	if (class_exists('core\chart_pie')) {
-		$data = new core\chart_series(get_string('lb_chart_series', 'report_coursestats'), [$only_forum_courses, $only_repository_courses, $activity_courses]);
-		$chart = new core\chart_pie();
-		$chart->add_series($data); 
-		$chart->set_labels([get_string('lb_forum_usage', 'report_coursestats'), get_string('lb_repository_usage', 'report_coursestats'), get_string('lb_activity_usage', 'report_coursestats')]);
-		echo $OUTPUT->render_chart($chart, false);
+	if (class_exists('core\chart_pie')) {		
+		// Types of usage chart
+		$data_types_of_use = new core\chart_series(get_string('lb_chart_series_types_of_use', 'report_coursestats'), [$only_forum_courses, $only_repository_courses, $activity_courses]);
+		$chart_types_of_use = new core\chart_pie();
+		$chart_types_of_use->add_series($data_types_of_use); 
+		$chart_types_of_use->set_labels([get_string('lb_forum_usage', 'report_coursestats'), get_string('lb_repository_usage', 'report_coursestats'), get_string('lb_activity_usage', 'report_coursestats')]);
+		
+		// Used courses chart
+		$data_used_courses = new core\chart_series(get_string('lb_chart_series_used_courses', 'report_coursestats'), [$amount_of_courses, ($amount_of_created_courses - $amount_of_courses)]);
+		$chart_used_courses = new core\chart_pie();
+		$chart_used_courses->add_series($data_used_courses); 
+		$chart_used_courses->set_labels([get_string('lb_used_courses', 'report_coursestats'), get_string('lb_not_used_courses', 'report_coursestats')]);
+
+		echo $OUTPUT->render_chart($chart_types_of_use, false);
+		echo $OUTPUT->render_chart($chart_used_courses, false);				
 	} 
 
 	$table = new html_table();
 	
-	$table->head = array(	get_string('lb_usage_type_name', 'report_coursestats'),
+	$table->head = array(get_string('lb_usage_type_name', 'report_coursestats'),
 						get_string('lb_courses_amount', 'report_coursestats'), 
 						get_string('lb_percent_of_used_courses', 'report_coursestats'),
 						get_string('lb_percent_of_created_courses', 'report_coursestats'),
