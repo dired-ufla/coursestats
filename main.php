@@ -73,6 +73,15 @@ if ($amount_of_courses > 0) {
 		echo $OUTPUT->render_chart($chart_used_courses, false);				
 	} 
 
+	$summary_table = new html_table();
+	
+	$summary_table->head = array(get_string('lb_courses_created_amount', 'report_coursestats'), get_string('lb_used_courses', 'report_coursestats'), get_string('lb_not_used_courses', 'report_coursestats'));
+	
+	$summary_table->data = array(array($amount_of_created_courses, $amount_of_courses . ' (' . number_format(($amount_of_courses/$amount_of_created_courses)*100, 2) . '%)', 
+		($amount_of_created_courses - $amount_of_courses) . ' (' . number_format((($amount_of_created_courses - $amount_of_courses)/$amount_of_created_courses)*100, 2) . '%)'));
+	
+	echo html_writer::table($summary_table);
+	
 	$table = new html_table();
 	
 	$table->head = array(get_string('lb_usage_type_name', 'report_coursestats'),
@@ -90,8 +99,8 @@ if ($amount_of_courses > 0) {
 		array(html_writer::link($url_filter_repository_usage_type, get_string('lb_repository_usage', 'report_coursestats')), $only_repository_courses, number_format(($only_repository_courses/$amount_of_courses)*100, 2) . '%', number_format(($only_repository_courses/$amount_of_created_courses)*100, 2) . '%', get_string('lb_repository_usage_help', 'report_coursestats')),
 		array(html_writer::link($url_filter_activities_usage_type, get_string('lb_activity_usage', 'report_coursestats')), $activity_courses, number_format(($activity_courses/$amount_of_courses)*100, 2) . '%', number_format(($activity_courses/$amount_of_created_courses)*100, 2) . '%', get_string('lb_activity_usage_help', 'report_coursestats'))
 	);
-	echo html_writer::table($table);
-	echo html_writer::tag('p', get_string('lb_courses_stats', 'report_coursestats') . ": " . $amount_of_courses . '/' . $amount_of_created_courses . ' = ' . number_format(($amount_of_courses/$amount_of_created_courses)*100, 2) . '%');
+	
+	echo html_writer::table($table);	
 } else {
 	echo html_writer::tag('p', get_string('lb_there_are_no_courses_stats', 'report_coursestats') . ' (' .$link . ')', array('align' => 'center'));
 }
