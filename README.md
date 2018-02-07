@@ -17,6 +17,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v2.6.1: this version fixes an error regarding the amount of courses
 - v2.6: this version improves the layout of the plugin main page
 - v2.5: this version presents information about created courses in a graphical way (using pie charts). 
 - v2.4: this version improves the plugin main page by including information about created courses instead of only used courses. 

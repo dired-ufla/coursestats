@@ -36,7 +36,8 @@ if ($category == ALL_CATEGORIES) {
 	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE));
 	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE));
 	$catname = get_string('lb_all_categories', 'report_coursestats');
-	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME);
+	// the minus 1 is necessary to exclude the default course, created by any new Moodle instance
+	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME) - 1;
 } else {
 	$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE, 'categoryid'=>$category));
 	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
