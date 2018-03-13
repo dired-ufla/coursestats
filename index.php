@@ -36,13 +36,13 @@ $result = $DB->get_records(COURSE_CATEGORIES_TABLE_NAME, null, 'name');
 $table = new html_table();
 
 $row = array();
-$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . ALL_CATEGORIES . '>' . get_string('lb_all_categories', 'report_coursestats') . '</a>';
+$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . ALL_CATEGORIES . '>' . get_string('lb_all_categories', 'report_coursestats') . '</a>';
 $table->data[] = $row;
 
 $table->head = array(	get_string('lb_choose_category', 'report_coursestats'));
 foreach ($result as $cs) {
     $row = array();
-    $row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $cs->id . '>' . $cs->name . '</a>';
+    $row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . $cs->id . '>' . $cs->name . '</a>';
 	$table->data[] = $row;
 }
 

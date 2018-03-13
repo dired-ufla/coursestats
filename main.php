@@ -30,32 +30,34 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
+$dep = optional_param('dep', ALL_DEP, PARAM_ALPHA);
 
 if ($category == ALL_CATEGORIES) {
-	$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE));
-	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE));
-	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE));
-	$catname = get_string('lb_all_categories', 'report_coursestats');
-	// the minus 1 is necessary to exclude the default course, created by any new Moodle instance
-	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME) - 1;
+	if ($dep == ALL_DEP) {	
+		$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE));
+		$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE));
+		$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE));
+		// the minus 1 is necessary to exclude the default course, created by any new Moodle instance
+		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME) - 1;
+	}
 } else {
-	$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE, 'categoryid'=>$category));
-	$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
-	$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE, 'categoryid'=>$category));
-	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
-	$catname = $cat->name;
-	$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('category'=>$category));
+	if ($dep == ALL_DEP) {	
+		$only_forum_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>FORUM_USAGE_TYPE, 'categoryid'=>$category));
+		$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
+		$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE, 'categoryid'=>$category));
+		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('category'=>$category));
+	}
 }
 
 $amount_of_courses = $only_forum_courses +  $only_repository_courses + $activity_courses;
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
+$url = new moodle_url($CFG->wwwroot . '/report/coursestats/departments.php');
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
 echo $OUTPUT->header();
 
 if ($amount_of_courses > 0) {
-	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' . $catname . ') - ' . $link);
+	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' .$link);
 
 	if (class_exists('core\chart_pie')) {		
 		// Types of usage chart

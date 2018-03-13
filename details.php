@@ -28,8 +28,6 @@ require_once($CFG->libdir.'/adminlib.php');
 require(__DIR__. '/constants.php');
 
 // page parameters
-$page    = optional_param('page', 0, PARAM_INT);
-$perpage = optional_param('perpage', 25, PARAM_INT);    // how many per page
 $usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
@@ -40,9 +38,6 @@ $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' . $link);
-
-$baseurl = new moodle_url('details.php', array('perpage' => $perpage, 'usagetype' => $usagetype, 'category' => $category));
-echo $OUTPUT->paging_bar(5, $page, $perpage, $baseurl);
 
 $whereclause = ' ';
 if ($usagetype != ALL_USAGE_TYPE and $category == ALL_CATEGORIES) {
@@ -57,8 +52,8 @@ $sql = "SELECT co.shortname, cs.courseid, cs.prev_usage_type, cs.curr_usage_type
         FROM {report_coursestats} cs 
         JOIN {course} co ON co.id = cs.courseid" . $whereclause .
         "ORDER BY co.shortname";
-$rs = $DB->get_recordset_sql($sql, array(), $page*$perpage, $perpage);
 
+$rs = $DB->get_recordset_sql($sql);
 
 $table = new html_table();
 $table->head = array(	get_string('lb_course_name', 'report_coursestats'),
@@ -93,6 +88,7 @@ foreach ($rs as $cs) {
 
 	$table->data[] = $row;
 }
+
 $rs->close();
 
 echo html_writer::table($table);
