@@ -77,7 +77,7 @@ $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 echo $OUTPUT->header();
 
 if ($amount_of_courses > 0) {
-	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. '/' . $depname . ') - ' . $link);
+	echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. ' | ' . $depname . ') - ' . $link);
 
 	if (class_exists('core\chart_pie')) {		
 		// Used courses chart

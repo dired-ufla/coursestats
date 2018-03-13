@@ -60,13 +60,13 @@ $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.ph
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCS&dep=gcs>DCS - Ciência do Solo</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DSA&dep=gsa>DSA - Ciências da Saúde</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEX&dep=gex>DEX - Ciências Exatas</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCF&dep=gcf>DCF - Ciências Florestais</a>');
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCF&dep=gef>DCF - Ciências Florestais</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCH&dep=gch>DCH - Ciências Humanas</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DIR&dep=gir>DIR - Direito</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DED&dep=ged>DED - Educação</a>');
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DIR&dep=gdi>DIR - Direito</a>');
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DED&dep=gde>DED - Educação</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEF&dep=gef>DEF - Educação Física</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEG&dep=geg>DEG - Engenharia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEN&dep=gen>DEN - Entomologia</a>');
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEG&dep=gne>DEG - Engenharia</a>');
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEN&dep=get>DEN - Entomologia</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DES&dep=ges>DES - Estatística</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DFI&dep=gfi>DFI - Física</a>');
 $table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DFP&dep=gfp>DFP - Fitopatologia</a>');
