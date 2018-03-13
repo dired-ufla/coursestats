@@ -100,12 +100,20 @@ $table = new html_table();
 $table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>', 
-	get_amount_created_courses(ALL_DEP), 0, 0);
+$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
+$co_created = get_amount_created_courses(ALL_DEP);
+$co_used = get_amount_used_courses(ALL_DEP);
+if ($co_created > 0) {
+	$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
+} else {
+	$co_percent = '-';
+}
+	
+$table->data[] = array($link, $co_created, $co_used, $co_percent);
 
 foreach ($departments as $depto) {
 	$co_created = get_amount_created_courses($depto['cod']);
-	$co_used = get_amount_used_courses($depto['cod']);;
+	$co_used = get_amount_used_courses($depto['cod']);
 	
 	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depto['acr'] . 
 		'&dep=' . $depto['cod'] . '>' . $depto['name'] . '</a>';
