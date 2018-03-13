@@ -30,6 +30,59 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
+function get_amount_created_courses($dep) {
+	global $category;
+	global $DB;
+	
+	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+		return ($DB->count_records(COURSE_TABLE_NAME) - 1);
+	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%')));
+	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+		return $DB->count_records(COURSE_TABLE_NAME, array('category'=>$category));
+	} else {
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));
+	}	
+}
+
+function get_amount_used_courses($dep) {
+	global $category;
+	global $DB;
+	
+	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+		return $DB->count_records(PLUGIN_TABLE_NAME);
+	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%'));
+	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+		return $DB->count_records(PLUGIN_TABLE_NAME, array('categoryid'=>$category));
+	} else {
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));
+	}
+}
+
+$departments = array(
+	array('cod'=>'gag', 'acr'=>'DAG', 'name'=>'DAG - Agricultura'),
+	array('cod'=>'gbi', 'acr'=>'DBI', 'name'=>'DBI - Biologia'),
+	array('cod'=>'gca', 'acr'=>'DCA', 'name'=>'DCA - Ciência dos Alimentos'),
+	array('cod'=>'gcc', 'acr'=>'DCC', 'name'=>'DCC - Ciência da Computação'),
+	array('cod'=>'gcs', 'acr'=>'DCS', 'name'=>'DCS - Ciência do Solo'),
+	array('cod'=>'gsa', 'acr'=>'DSA', 'name'=>'DSA - Ciências da Saúde'),
+	array('cod'=>'gex', 'acr'=>'DEX', 'name'=>'DEX - Ciências Exatas'),
+	array('cod'=>'gef', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
+	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
+	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
+	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
+	array('cod'=>'gne', 'acr'=>'DEG', 'name'=>'DEG - Engenharia'),
+	array('cod'=>'get', 'acr'=>'DEB', 'name'=>'DEN - Entomologia'),
+	array('cod'=>'ges', 'acr'=>'DES', 'name'=>'DES - Estatística'),
+	array('cod'=>'gfi', 'acr'=>'DFI', 'name'=>'DFI - Física'),
+	array('cod'=>'gfp', 'acr'=>'DFP', 'name'=>'DFP - Fitopatologia'),
+	array('cod'=>'gnu', 'acr'=>'DNU', 'name'=>'DNU - Nutrição'),
+	array('cod'=>'gmv', 'acr'=>'DMV', 'name'=>'DMV - Medicina Veterinária'),
+	array('cod'=>'gqi', 'acr'=>'DQI', 'name'=>'DQI - Química'),
+	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia')
+); 
+
 $url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
@@ -44,36 +97,26 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. ') - ' . $link);
 
 $table = new html_table();
+$table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
+	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
-$row = array();
-$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
-$table->data[] = $row;
+$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>', 
+	get_amount_created_courses(ALL_DEP), 0, 0);
 
-$table->head = array(	get_string('lb_choose_dep', 'report_coursestats'));
-
-// Departments
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DAE&dep=gae>DAE - Administração e Economia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DAG&dep=gag>DAG - Agricultura</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DBI&dep=gbi>DBI - Biologia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCA&dep=gca>DCA - Ciência dos Alimentos</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCC&dep=gcc>DCC - Ciência da Computação</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCS&dep=gcs>DCS - Ciência do Solo</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DSA&dep=gsa>DSA - Ciências da Saúde</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEX&dep=gex>DEX - Ciências Exatas</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCF&dep=gef>DCF - Ciências Florestais</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DCH&dep=gch>DCH - Ciências Humanas</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DIR&dep=gdi>DIR - Direito</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DED&dep=gde>DED - Educação</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEF&dep=gef>DEF - Educação Física</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEG&dep=gne>DEG - Engenharia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DEN&dep=get>DEN - Entomologia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DES&dep=ges>DES - Estatística</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DFI&dep=gfi>DFI - Física</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DFP&dep=gfp>DFP - Fitopatologia</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DNU&dep=gnu>DNU - Nutrição</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DMV&dep=gmv>DMV - Medicina Veterinária</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DQI&dep=gqi>DQI - Química</a>');
-$table->data[] = array('<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=DZO&dep=gzo>DZO - Zootecnia</a>');
+foreach ($departments as $depto) {
+	$co_created = get_amount_created_courses($depto['cod']);
+	$co_used = get_amount_used_courses($depto['cod']);;
+	
+	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depto['acr'] . 
+		'&dep=' . $depto['cod'] . '>' . $depto['name'] . '</a>';
+	
+	if ($co_created > 0) {
+		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
+	} else {
+		$co_percent = '-';
+	}
+	$table->data[] = array($link, $co_created, $co_used, $co_percent);
+}
  
 echo html_writer::table($table);
 
