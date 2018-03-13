@@ -30,30 +30,40 @@ require(__DIR__. '/constants.php');
 // page parameters
 $usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
+$dep = optional_param('dep', ALL_DEP, PARAM_ALPHA);
+$depname = optional_param('depname', '', PARAM_ALPHA);
 
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?category=' . $category);
+$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depname . '&dep=' . $dep);
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' - ' . $link);
 
-$whereclause = ' ';
-if ($usagetype != ALL_USAGE_TYPE and $category == ALL_CATEGORIES) {
-	$whereclause = ' WHERE cs.curr_usage_type = \'' . $usagetype . '\'';
-} else if ($usagetype != ALL_USAGE_TYPE and $category != ALL_CATEGORIES) {
-	$whereclause = ' WHERE cs.curr_usage_type = \'' . $usagetype . '\' and cs.categoryid = ' . $category . ' ';
-} else if ($usagetype == ALL_USAGE_TYPE and $category != ALL_CATEGORIES) { 
-	$whereclause = ' WHERE cs.categoryid = ' . $category . ' ';
+if ($category == ALL_CATEGORIES) {
+	$catname = get_string('lb_all_categories', 'report_coursestats');	
+	
+	if ($dep == ALL_DEP) {
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type ORDER BY co.shortname', array('type'=>$usagetype));
+	} else {
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', array('type'=>$usagetype, 'name'=>'%'.$dep.'%'));
+	}
+	
+} else {
+	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
+	$catname = $cat->name;
+	
+	if ($dep == ALL_DEP) {
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND cs.categoryid = :cat ORDER BY co.shortname', 
+			array('type'=>$usagetype, 'cat'=>$category));
+	} else {
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND cs.categoryid = :cat AND ' . 
+			$DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', 
+			array('type'=>$usagetype, 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+	}
 }
 
-$sql = "SELECT co.shortname, cs.courseid, cs.prev_usage_type, cs.curr_usage_type, cs.last_update, cs.categoryid
-        FROM {report_coursestats} cs 
-        JOIN {course} co ON co.id = cs.courseid" . $whereclause .
-        "ORDER BY co.shortname";
-
-$rs = $DB->get_recordset_sql($sql);
+echo $OUTPUT->header();
+echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. '/' . $depname . ') - ' . $link);
 
 $table = new html_table();
 $table->head = array(	get_string('lb_course_name', 'report_coursestats'),
