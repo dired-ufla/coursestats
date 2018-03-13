@@ -39,6 +39,12 @@ if ($category == ALL_CATEGORIES) {
 		$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE));
 		// the minus 1 is necessary to exclude the default course, created by any new Moodle instance
 		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME) - 1;
+	} else {
+		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('type'=>FORUM_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+		$only_repository_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('type'=>REPOSITORY_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+		$activity_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('type'=>ACTIVITY_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+
+		$amount_of_created_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%'));;
 	}
 } else {
 	if ($dep == ALL_DEP) {	
@@ -46,6 +52,12 @@ if ($category == ALL_CATEGORIES) {
 		$only_repository_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>REPOSITORY_USAGE_TYPE, 'categoryid'=>$category));
 		$activity_courses = $DB->count_records(PLUGIN_TABLE_NAME, array('curr_usage_type'=>ACTIVITY_USAGE_TYPE, 'categoryid'=>$category));
 		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('category'=>$category));
+	} else {
+		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.categoryid = :cat AND cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'type'=>FORUM_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+		$only_repository_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.categoryid = :cat AND cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'type'=>REPOSITORY_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+		$activity_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.categoryid = :cat AND cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'type'=>ACTIVITY_USAGE_TYPE, 'name'=>'%'.$dep.'%'));
+
+		$amount_of_created_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));;
 	}
 }
 
