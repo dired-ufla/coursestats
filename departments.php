@@ -102,6 +102,7 @@ $link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursesta
 echo '<p align="center">' . $link_csv . '</p>';
 
 $table = new html_table();
+$table->size = array( '55%', '15%', '15%', '15%');
 $table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
