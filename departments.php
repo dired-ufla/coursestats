@@ -99,7 +99,7 @@ echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$ca
 $url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen.php?category=' . $category);
 $link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursestats'));
 
-echo $link_csv;
+echo '<p align="center">' . $link_csv . '</p>';
 
 $table = new html_table();
 $table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
