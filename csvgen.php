@@ -83,55 +83,43 @@ $departments = array(
 	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia')
 ); 
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
-$link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
+header('Content-Type: application/excel');
+header('Content-Disposition: attachment; filename="sample.csv"');
 
-if ($category == ALL_CATEGORIES) {
-	$catname = get_string('lb_all_categories', 'report_coursestats');
-} else {
-	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
-	$catname = $cat->name;
-}
+$fp = fopen('php://output', 'w');
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. ') - ' . $link);
-
-$url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen.php?category=' . $category);
-$link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursestats'));
-
-echo $link_csv;
-
-$table = new html_table();
-$table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
+$head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
-$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
+fputcsv($fp, $head);
+
+$depname = get_string('lb_all_dep', 'report_coursestats');
 $co_created = get_amount_created_courses(ALL_DEP);
 $co_used = get_amount_used_courses(ALL_DEP);
 if ($co_created > 0) {
 	$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
 } else {
-	$co_percent = '-';
+	$co_percent = '0';
 }
 	
-$table->data[] = array($link, $co_created, $co_used, $co_percent);
+$dep_data = array($depname, $co_created, $co_used, $co_percent);
+
+fputcsv($fp, $dep_data);
 
 foreach ($departments as $depto) {
 	$co_created = get_amount_created_courses($depto['cod']);
 	$co_used = get_amount_used_courses($depto['cod']);
 	
-	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depto['acr'] . 
-		'&dep=' . $depto['cod'] . '>' . $depto['name'] . '</a>';
+	$depname = $depto['name'];
 	
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
 	} else {
 		$co_percent = '-';
 	}
-	$table->data[] = array($link, $co_created, $co_used, $co_percent);
+	$dep_data = array($depname, $co_created, $co_used, $co_percent);
+	fputcsv($fp, $dep_data);
+
 }
- 
-echo html_writer::table($table);
 
-echo $OUTPUT->footer();
-
+fclose($fp);
