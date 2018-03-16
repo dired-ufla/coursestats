@@ -37,6 +37,7 @@ $string['lb_prev_usage_type'] = 'Previous usage type';
 $string['lb_curr_usage_type'] = 'Current usage type';
 $string['lb_last_update'] = 'Last update';
 $string['lb_choose_category'] = 'Choose a category';
+$string['lb_category'] = 'Category: ';
 $string['lb_choose_dep'] = 'Department';
 $string['lb_all_categories'] = 'All categories';
 $string['lb_all_dep'] = 'All departments';

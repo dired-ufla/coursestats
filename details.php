@@ -63,7 +63,7 @@ if ($category == ALL_CATEGORIES) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. ' | ' . $depname . ') - ' . $link);
+echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' (' . $depname . ') - ' . $link);
 
 $table = new html_table();
 $table->head = array(	get_string('lb_course_name', 'report_coursestats'),

@@ -98,7 +98,7 @@ if ($category == ALL_CATEGORIES) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('pluginname', 'report_coursestats') . ' (' .$catname. ') - ' . $link);
+echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' - ' . $link);
 
 $table = new html_table();
 $table->size = array( '55%', '15%', '15%', '15%');
