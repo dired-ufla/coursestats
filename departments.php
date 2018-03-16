@@ -142,21 +142,20 @@ foreach ($departments as $depto) {
  
 if (class_exists('core\chart_bar')) {
 	$chart_stacked = new core\chart_bar();
-	$chart_percentage = new core\chart_bar();
+	//$chart_percentage = new core\chart_bar();
 	
 	$created_courses_serie = new core\chart_series(get_string('lb_courses_created_amount', 'report_coursestats'), $created_courses_array);
 	$used_courses_serie = new core\chart_series(get_string('lb_used_courses', 'report_coursestats'), $used_courses_array);
 	$percentage_used_courses_serie = new core\chart_series(get_string('lb_percent_of_used_courses', 'report_coursestats'), $percentage_used_courses_array);
+	$percentage_used_courses_serie->set_type(\core\chart_series::TYPE_LINE);
 	
 	$chart_stacked->add_series($created_courses_serie);
 	$chart_stacked->add_series($used_courses_serie);
+	$chart_stacked->add_series($percentage_used_courses_serie);
 	$chart_stacked->set_labels($dept_acr_array);
-
-	$chart_percentage->add_series($percentage_used_courses_serie);
-	$chart_percentage->set_labels($dept_acr_array);
 	
 	echo $OUTPUT->render_chart($chart_stacked, false);
-	echo $OUTPUT->render_chart($chart_percentage, false);
+	//echo $OUTPUT->render_chart($chart_percentage, false);
 }
 
 $url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen.php?category=' . $category);
