@@ -144,8 +144,6 @@ if (class_exists('core\chart_bar')) {
 	$chart_stacked = new core\chart_bar();
 	$chart_percentage = new core\chart_bar();
 	
-	$chart_stacked->set_stacked(true);
-	
 	$created_courses_serie = new core\chart_series(get_string('lb_courses_created_amount', 'report_coursestats'), $created_courses_array);
 	$used_courses_serie = new core\chart_series(get_string('lb_used_courses', 'report_coursestats'), $used_courses_array);
 	$percentage_used_courses_serie = new core\chart_series(get_string('lb_percent_of_used_courses', 'report_coursestats'), $percentage_used_courses_array);
