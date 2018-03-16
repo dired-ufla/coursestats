@@ -149,9 +149,9 @@ if (class_exists('core\chart_bar')) {
 	$percentage_used_courses_serie = new core\chart_series(get_string('lb_percent_of_used_courses', 'report_coursestats'), $percentage_used_courses_array);
 	$percentage_used_courses_serie->set_type(\core\chart_series::TYPE_LINE);
 	
+	$chart_stacked->add_series($percentage_used_courses_serie);
 	$chart_stacked->add_series($created_courses_serie);
 	$chart_stacked->add_series($used_courses_serie);
-	$chart_stacked->add_series($percentage_used_courses_serie);
 	$chart_stacked->set_labels($dept_acr_array);
 	
 	echo $OUTPUT->render_chart($chart_stacked, false);
