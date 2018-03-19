@@ -61,6 +61,7 @@ function get_amount_used_courses($dep) {
 }
 
 $departments = array(
+	array('cod'=>'gae', 'acr'=>'DAE', 'name'=>'DAE - Administração e Economia'),
 	array('cod'=>'gag', 'acr'=>'DAG', 'name'=>'DAG - Agricultura'),
 	array('cod'=>'gbi', 'acr'=>'DBI', 'name'=>'DBI - Biologia'),
 	array('cod'=>'gca', 'acr'=>'DCA', 'name'=>'DCA - Ciência dos Alimentos'),
@@ -72,7 +73,9 @@ $departments = array(
 	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
 	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
 	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
+	array('cod'=>'gef', 'acr'=>'DEF', 'name'=>'DEF - Educação Física'),
 	array('cod'=>'gne', 'acr'=>'DEG', 'name'=>'DEG - Engenharia'),
+	array('cod'=>'gel', 'acr'=>'DEL', 'name'=>'DEL - Ensino da Linguagem'),
 	array('cod'=>'get', 'acr'=>'DEB', 'name'=>'DEN - Entomologia'),
 	array('cod'=>'ges', 'acr'=>'DES', 'name'=>'DES - Estatística'),
 	array('cod'=>'gfi', 'acr'=>'DFI', 'name'=>'DFI - Física'),
