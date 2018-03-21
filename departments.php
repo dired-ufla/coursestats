@@ -54,7 +54,8 @@ function get_amount_used_courses($dep) {
 	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%'));
 	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records(PLUGIN_TABLE_NAME, array('categoryid'=>$category));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat', 
+			array('cat'=>$category));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));
 	}

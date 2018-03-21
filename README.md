@@ -1,4 +1,7 @@
 # Courses Usage Statistics
+
+** Important**: this is a version of the "coursestats plugin" specifically created for the needs of the Federal University of Brazil. You will find a generic version of the plugin in the master branch of this repository.
+
 In our institution (Federal University of Lavras, Lavras, Brazil - in portuguese, [Universidade Federal de Lavras - UFLA](http://www.ufla.br/portal/), we have an expressive amount of courses in progress (~ 1.7k in just one Moodle instance, called "Campus Virtual"). The sector that coordinates the activities related to the "Campus Virtual" administration is called "[Diretoria de Educação à Distância (DIRED)](http://www.dired.ufla.br/portal/)". A question we have made to ourselves is: "how are all these courses being used by the professors?". 
 
 In our preliminary research, we have found three main types of usage:
@@ -17,6 +20,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v2.7: this version fixes some security issues as well as includes new features, such as "departments statistics" and "export to CSV" functionality
 - v2.6.1: this version fixes an error regarding the amount of courses
 - v2.6: this version improves the layout of the plugin main page
 - v2.5: this version presents information about created courses in a graphical way (using pie charts). 

@@ -53,10 +53,10 @@ if ($category == ALL_CATEGORIES) {
 	$catname = $cat->name;
 	
 	if ($dep == ALL_DEP) {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND cs.categoryid = :cat ORDER BY co.shortname', 
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat ORDER BY co.shortname', 
 			array('type'=>$usagetype, 'cat'=>$category));
 	} else {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND cs.categoryid = :cat AND ' . 
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat AND ' . 
 			$DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', 
 			array('type'=>$usagetype, 'cat'=>$category, 'name'=>'%'.$dep.'%'));
 	}
