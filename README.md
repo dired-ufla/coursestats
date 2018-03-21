@@ -1,6 +1,6 @@
 # Courses Usage Statistics
 
-** Important**: this is a version of the "coursestats plugin" specifically created for the needs of the Federal University of Brazil. You will find a generic version of the plugin in the master branch of this repository.
+**Important**: this is a version of the "coursestats plugin" specifically created for the needs of the Federal University of Brazil. You will find a generic version of the plugin in the master branch of this repository.
 
 In our institution (Federal University of Lavras, Lavras, Brazil - in portuguese, [Universidade Federal de Lavras - UFLA](http://www.ufla.br/portal/), we have an expressive amount of courses in progress (~ 1.7k in just one Moodle instance, called "Campus Virtual"). The sector that coordinates the activities related to the "Campus Virtual" administration is called "[Diretoria de Educação à Distância (DIRED)](http://www.dired.ufla.br/portal/)". A question we have made to ourselves is: "how are all these courses being used by the professors?". 
 
