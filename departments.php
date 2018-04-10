@@ -70,7 +70,7 @@ $departments = array(
 	array('cod'=>'gcs', 'acr'=>'DCS', 'name'=>'DCS - Ciência do Solo'),
 	array('cod'=>'gsa', 'acr'=>'DSA', 'name'=>'DSA - Ciências da Saúde'),
 	array('cod'=>'gex', 'acr'=>'DEX', 'name'=>'DEX - Ciências Exatas'),
-	array('cod'=>'gef', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
+	array('cod'=>'gcf', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
 	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
 	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
 	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
