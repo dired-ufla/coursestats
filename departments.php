@@ -84,7 +84,8 @@ $departments = array(
 	array('cod'=>'gnu', 'acr'=>'DNU', 'name'=>'DNU - Nutrição'),
 	array('cod'=>'gmv', 'acr'=>'DMV', 'name'=>'DMV - Medicina Veterinária'),
 	array('cod'=>'gqi', 'acr'=>'DQI', 'name'=>'DQI - Química'),
-	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia')
+	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia'),
+	array('cod'=>'prg', 'acr'=>'PRG', 'name'=>'PRG - Pós-Graduação')
 ); 
 
 $dept_acr_array = array('DAE', 'DAG', 'DBI', 'DCA', 'DCC', 'DCS', 'DSA', 'DEX', 
