@@ -43,9 +43,11 @@ if ($category == ALL_CATEGORIES) {
 	$catname = get_string('lb_all_categories', 'report_coursestats');	
 	
 	if ($dep == ALL_DEP) {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type ORDER BY co.shortname', array('type'=>$usagetype));
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible ORDER BY co.shortname', 
+			array('type'=>$usagetype, 'visible'=>'1'));
 	} else {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND ' . $DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', array('type'=>$usagetype, 'name'=>'%'.$dep.'%'));
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', 
+			array('type'=>$usagetype, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
 	}
 	
 } else {
@@ -53,12 +55,12 @@ if ($category == ALL_CATEGORIES) {
 	$catname = $cat->name;
 	
 	if ($dep == ALL_DEP) {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat ORDER BY co.shortname', 
-			array('type'=>$usagetype, 'cat'=>$category));
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
+			array('type'=>$usagetype, 'cat'=>$category, 'visible'=>'1'));
 	} else {
-		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat AND ' . 
+		$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.category = :cat AND co.visible = :visible AND ' . 
 			$DB->sql_like('co.shortname', ':name', false, false) . '  ORDER BY co.shortname', 
-			array('type'=>$usagetype, 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+			array('type'=>$usagetype, 'cat'=>$category, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
 	}
 }
 

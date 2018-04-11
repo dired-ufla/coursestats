@@ -35,13 +35,17 @@ function get_amount_created_courses($dep) {
 	global $DB;
 	
 	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
-		return ($DB->count_records(COURSE_TABLE_NAME) - 1);
+		return ($DB->count_records(COURSE_TABLE_NAME, 
+			array('visible'=>'1')) - 1);
 	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
-		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%')));
+		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false). ' AND co.visible = :visible', 
+			array('name'=>'%'.$dep.'%', 'visible'=>'1')));
 	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records(COURSE_TABLE_NAME, array('category'=>$category));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} WHERE co.visible = :visible AND co.category = :cat', 
+			array('cat'=>$category, 'visible'=>'1'));
 	} else {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
 	}	
 }
 
@@ -50,14 +54,17 @@ function get_amount_used_courses($dep) {
 	global $DB;
 	
 	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records(PLUGIN_TABLE_NAME);
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
+			array('visible'=>'1'));
 	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE ' . $DB->sql_like('co.shortname', ':name', false, false), array('name'=>'%'.$dep.'%'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
+			array('visible'=>'1', 'name'=>'%'.$dep.'%'));
 	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat', 
-			array('cat'=>$category));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
+			array('visible'=>'1', 'cat'=>$category));
 	} else {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), array('cat'=>$category, 'name'=>'%'.$dep.'%'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
 	}
 }
 
@@ -70,11 +77,11 @@ $departments = array(
 	array('cod'=>'gcs', 'acr'=>'DCS', 'name'=>'DCS - Ciência do Solo'),
 	array('cod'=>'gsa', 'acr'=>'DSA', 'name'=>'DSA - Ciências da Saúde'),
 	array('cod'=>'gex', 'acr'=>'DEX', 'name'=>'DEX - Ciências Exatas'),
-	array('cod'=>'gcf', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
+	array('cod'=>'gef', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
 	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
 	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
 	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
-	array('cod'=>'gef', 'acr'=>'DEF', 'name'=>'DEF - Educação Física'),
+	array('cod'=>'gfd', 'acr'=>'DEF', 'name'=>'DEF - Educação Física'),
 	array('cod'=>'gne', 'acr'=>'DEG', 'name'=>'DEG - Engenharia'),
 	array('cod'=>'gel', 'acr'=>'DEL', 'name'=>'DEL - Ensino da Linguagem'),
 	array('cod'=>'get', 'acr'=>'DEB', 'name'=>'DEN - Entomologia'),
