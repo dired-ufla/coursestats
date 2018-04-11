@@ -109,7 +109,7 @@ $depname = get_string('lb_all_dep', 'report_coursestats');
 $co_created = get_amount_created_courses(ALL_DEP);
 $co_used = get_amount_used_courses(ALL_DEP);
 if ($co_created > 0) {
-	$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
+	$co_percent = number_format(($co_used / $co_created) * 100, 2);
 } else {
 	$co_percent = '0';
 }
@@ -125,7 +125,7 @@ foreach ($departments as $depto) {
 	$depname = $depto['name'];
 	
 	if ($co_created > 0) {
-		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
+		$co_percent = number_format(($co_used / $co_created) * 100, 2);
 	} else {
 		$co_percent = '-';
 	}
