@@ -97,7 +97,7 @@ $departments = array(
 
 $dept_acr_array = array('DAE', 'DAG', 'DBI', 'DCA', 'DCC', 'DCS', 'DSA', 'DEX', 
 	'DCF', 'DCH', 'DIR', 'DED', 'DEF', 'DEG', 'DEL', 'DEB', 'DES', 'DFI', 'DFP', 
-	'DNU', 'DMV', 'DQI', 'DZO');
+	'DNU', 'DMV', 'DQI', 'DZO', 'PRG');
 
 $url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
