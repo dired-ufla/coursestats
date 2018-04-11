@@ -41,7 +41,7 @@ function get_amount_created_courses($dep) {
 		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false). ' AND co.visible = :visible', 
 			array('name'=>'%'.$dep.'%', 'visible'=>'1')));
 	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} WHERE co.visible = :visible AND co.category = :cat', 
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat', 
 			array('cat'=>$category, 'visible'=>'1'));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
