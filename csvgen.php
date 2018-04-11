@@ -127,7 +127,7 @@ foreach ($departments as $depto) {
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2);
 	} else {
-		$co_percent = '-';
+		$co_percent = '0';
 	}
 	$dep_data = array($depname, $co_created, $co_used, $co_percent);
 	fputcsv($fp, $dep_data);
