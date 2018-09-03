@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="report/coursestats/db" VERSION="20171007" COMMENT="XMLDB file for Moodle report/coursestats"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="report_coursestats" COMMENT="This table stores information about course usage statistics.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Course id"/>
+        <FIELD NAME="prev_usage_type" TYPE="char" LENGTH="25" NOTNULL="false" SEQUENCE="false" COMMENT="This field stores the name of the previous type of usage in the course."/>
+        <FIELD NAME="curr_usage_type" TYPE="char" LENGTH="25" NOTNULL="true" SEQUENCE="false" COMMENT="This field stores the name of the current type of usage in the course."/>
+        <FIELD NAME="last_update" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="This field stores the date of the last update performed in the course."/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid_fk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" COMMENT="Foreign key that references the course table"/>
+        <KEY NAME="categoryid_fk" TYPE="foreign" FIELDS="categoryid" REFTABLE="course_categories" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
