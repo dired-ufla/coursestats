@@ -42,12 +42,12 @@ $string['lb_choose_dep'] = 'Departamento';
 $string['lb_all_categories'] = 'Todas';
 $string['lb_all_dep'] = 'Todos departamentos';
 $string['lb_null_usage'] = 'Nenhum';
-$string['lb_forum_usage'] = 'Apenas fórum';
+$string['lb_forum_usage'] = 'Fórum de notícias';
 $string['lb_used_courses'] = 'Total de cursos utilizados';
 $string['lb_not_used_courses'] = 'Total de cursos não utilizados';
 $string['lb_courses_created_amount'] = 'Total de cursos criados';
 $string['lb_forum_usage_help'] = 'Cursos que estão sendo utilizados apenas para comunicação entre professor e alunos, por meio do <b>Fórum de Notícias</b>.';
-$string['lb_repository_usage'] = 'Apenas repositório';
+$string['lb_repository_usage'] = 'Repositório';
 $string['lb_repository_usage_help'] = 'Cursos que estão sendo utilizados apenas como repositórios de arquivos. Ou seja, o professor disponibilizou 
   apenas <b>arquivos</b>, <b>pastas</b> ou <b>URLs</b> nestes cursos.';
 $string['lb_activity_usage'] = 'Atividades';
