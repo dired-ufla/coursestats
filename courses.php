@@ -149,7 +149,7 @@ foreach ($courses as $course) {
 	$used_courses_array[] = $co_used;
 	
 	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.COURSES_PAGE.'&category=' . $category . '&depname=' . $course['acr'] . 
-		'&dep=' . $course['cod'] . '>' . $course['name'] . '</a>';
+		'&dep=' . $course['cod'] . '>' . $course['cod'] . ' - ' . $course['name'] . '</a>';
 	
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
