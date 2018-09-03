@@ -30,15 +30,14 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
-$dep = optional_param('dep', ALL_DEP, PARAM_ALPHANUM);
-$depname = optional_param('depname', '', PARAM_ALPHANUM);
-$backto = optional_param('backto', DEPARTMENTS_PAGE, PARAM_ALPHANUM);
+$course = optional_param('course', ALL_COURSES, PARAM_ALPHA);
+$coursename = optional_param('coursename', '', PARAM_ALPHA);
 
 if ($category == ALL_CATEGORIES) {
 	
 	$catname = get_string('lb_all_categories', 'report_coursestats');
 	
-	if ($dep == ALL_DEP) {	
+	if ($course == ALL_COURSES) {	
 		
 		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible', 
 			array('type'=>FORUM_USAGE_TYPE, 'visible'=>'1'));
@@ -50,21 +49,21 @@ if ($category == ALL_CATEGORIES) {
 		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('visible'=>'1')) - 1;
 	} else {
 		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('type'=>FORUM_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('type'=>FORUM_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 		$only_repository_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('type'=>REPOSITORY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('type'=>REPOSITORY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 		$activity_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('type'=>ACTIVITY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('type'=>ACTIVITY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 
 		$amount_of_created_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'name'=>'%'.$dep.'%'));;
+			array('visible'=>'1', 'name'=>'%'.$course.'%'));;
 	}
 } else {
 	
 	$cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	if ($dep == ALL_DEP) {	
+	if ($course == ALL_DEP) {	
 		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND cs.curr_usage_type = :type AND co.visible = :visible', 
 			array('type'=>FORUM_USAGE_TYPE, 'cat'=>$category, 'visible'=>'1'));
 		$only_repository_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND cs.curr_usage_type = :type AND co.visible = :visible', 
@@ -75,26 +74,26 @@ if ($category == ALL_CATEGORIES) {
 		$amount_of_created_courses = $DB->count_records(COURSE_TABLE_NAME, array('visible'=>'1', 'category'=>$category));
 	} else {
 		$only_forum_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('cat'=>$category, 'type'=>FORUM_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('cat'=>$category, 'type'=>FORUM_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 		$only_repository_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('cat'=>$category, 'type'=>REPOSITORY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('cat'=>$category, 'type'=>REPOSITORY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 		$activity_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('cat'=>$category, 'type'=>ACTIVITY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('cat'=>$category, 'type'=>ACTIVITY_USAGE_TYPE, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 
 		$amount_of_created_courses = $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.category = :cat AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('cat'=>$category, 'visible'=>'1', 'name'=>'%'.$dep.'%'));
+			array('cat'=>$category, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 	}
 }
 
 $amount_of_courses = $only_forum_courses +  $only_repository_courses + $activity_courses;
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/'.$backto.'.php?category=' . $category);
+$url = new moodle_url($CFG->wwwroot . '/report/coursestats/departments.php?category=' . $category);
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
 echo $OUTPUT->header();
 
 if ($amount_of_courses > 0) {
-	echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' (' . $depname . ') - ' . $link);
+	echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' (' . $coursename . ') - ' . $link);
 
 	if (class_exists('core\chart_pie')) {		
 		// Used courses chart
@@ -133,9 +132,9 @@ if ($amount_of_courses > 0) {
 						get_string('lb_percent_of_created_courses', 'report_coursestats'),
 						get_string('lb_usage_type_desc', 'report_coursestats'));
 	
-	$url_filter_forum_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . FORUM_USAGE_TYPE . '&category=' . $category . '&dep='.$dep. '&depname='.$depname);
-	$url_filter_repository_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . REPOSITORY_USAGE_TYPE . '&category=' . $category . '&dep='.$dep. '&depname='.$depname);
-	$url_filter_activities_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . ACTIVITY_USAGE_TYPE . '&category=' . $category . '&dep='.$dep. '&depname='.$depname);
+	$url_filter_forum_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . FORUM_USAGE_TYPE . '&category=' . $category . '&dep='.$course. '&depname='.$coursename);
+	$url_filter_repository_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . REPOSITORY_USAGE_TYPE . '&category=' . $category . '&dep='.$course. '&depname='.$coursename);
+	$url_filter_activities_usage_type = new moodle_url($CFG->wwwroot . '/report/coursestats/details.php?usagetype=' . ACTIVITY_USAGE_TYPE . '&category=' . $category . '&dep='.$course. '&depname='.$coursename);
 
 	$table->data = array(
 		array(html_writer::link($url_filter_forum_usage_type, get_string('lb_forum_usage', 'report_coursestats')), $only_forum_courses, number_format(($only_forum_courses/$amount_of_courses)*100, 2) . '%', number_format(($only_forum_courses/$amount_of_created_courses)*100, 2) . '%', get_string('lb_forum_usage_help', 'report_coursestats')),

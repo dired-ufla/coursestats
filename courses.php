@@ -123,10 +123,10 @@ echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname
 
 $table = new html_table();
 $table->size = array( '55%', '15%', '15%', '15%');
-$table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
+$table->head = array(get_string('lb_choose_course', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
-$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
+$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.COURSES_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_courses', 'report_coursestats') . '&dep=' . ALL_COURSES . '>' .get_string('lb_all_courses', 'report_coursestats') . '</a>';
 $co_created = get_amount_created_courses(ALL_COURSES);
 $co_used = get_amount_used_courses(ALL_COURSES);
 if ($co_created > 0) {
@@ -148,7 +148,7 @@ foreach ($courses as $course) {
 	$created_courses_array[] = $co_created;
 	$used_courses_array[] = $co_used;
 	
-	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $course['acr'] . 
+	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.COURSES_PAGE.'&category=' . $category . '&depname=' . $course['acr'] . 
 		'&dep=' . $course['cod'] . '>' . $course['name'] . '</a>';
 	
 	if ($co_created > 0) {
@@ -179,7 +179,7 @@ if (class_exists('core\chart_bar')) {
 	//echo $OUTPUT->render_chart($chart_percentage, false);
 }
 
-$url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen.php?category=' . $category);
+$url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgencourses.php?category=' . $category);
 $link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursestats'));
 
 echo '<p align="center">' . $link_csv . '</p>';

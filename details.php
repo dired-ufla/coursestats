@@ -28,14 +28,15 @@ require_once($CFG->libdir.'/adminlib.php');
 require(__DIR__. '/constants.php');
 
 // page parameters
-$usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHA);    // usage type
+$usagetype = optional_param('usagetype', ALL_USAGE_TYPE, PARAM_ALPHANUM);    // usage type
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
-$dep = optional_param('dep', ALL_DEP, PARAM_ALPHA);
-$depname = optional_param('depname', '', PARAM_ALPHA);
+$dep = optional_param('dep', ALL_DEP, PARAM_ALPHANUM);
+$depname = optional_param('depname', '', PARAM_ALPHANUM);
+$backto = optional_param('backto', DEPARTMENTS_PAGE, PARAM_ALPHANUM);
 
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depname . '&dep=' . $dep);
+$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?backto='.$backto.'&category=' . $category . '&depname=' . $depname . '&dep=' . $dep);
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
 
 

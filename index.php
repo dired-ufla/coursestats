@@ -36,13 +36,18 @@ $result = $DB->get_records(COURSE_CATEGORIES_TABLE_NAME, null, 'name');
 $table = new html_table();
 
 $row = array();
-$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . ALL_CATEGORIES . '>' . get_string('lb_all_categories', 'report_coursestats') . '</a>';
+$row[] = get_string('lb_all_categories', 'report_coursestats');
+$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?category=' . ALL_CATEGORIES . '>'.get_string('lb_courses', 'report_coursestats').'</a>';
+$row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . ALL_CATEGORIES . '>'.get_string('lb_departments', 'report_coursestats').'</a>';
 $table->data[] = $row;
 
-$table->head = array(	get_string('lb_choose_category', 'report_coursestats'));
+$table->size = array( '60%', '20%', '20%');
+$table->head = array(	get_string('lb_choose_category', 'report_coursestats'), '', '');
 foreach ($result as $cs) {
     $row = array();
-    $row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . $cs->id . '>' . $cs->name . '</a>';
+    $row[] = $cs->name;
+    $row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?category=' . $cs->id . '>'.get_string('lb_courses', 'report_coursestats').'</a>';
+    $row[] = '<a href=' . $CFG->wwwroot . '/report/coursestats/departments.php?category=' . $cs->id . '>'.get_string('lb_departments', 'report_coursestats').'</a>';
 	$table->data[] = $row;
 }
 

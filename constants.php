@@ -31,6 +31,8 @@ define('ALL_USAGE_TYPE', 'all');
 define('ALL_CATEGORIES', -1);
 define('NULL_USAGE_TYPE', 'null');
 define('FORUM_USAGE_TYPE', 'forum');
+define('DEPARTMENTS_PAGE', 'departments');
+define('COURSES_PAGE', 'courses');
 define('REPOSITORY_USAGE_TYPE', 'repository');
 define('ACTIVITY_USAGE_TYPE', 'activity');
 define('PLUGIN_TABLE_NAME', 'report_coursestats');

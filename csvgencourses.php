@@ -30,41 +30,41 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
-function get_amount_created_courses($dep) {
+function get_amount_created_courses($course) {
 	global $category;
 	global $DB;
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+	if ($category == ALL_CATEGORIES and $course == ALL_COURSES) {
 		return ($DB->count_records(COURSE_TABLE_NAME, 
 			array('visible'=>'1')) - 1);
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+	} else if ($category == ALL_CATEGORIES and $course != ALL_COURSES) {
 		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false). ' AND co.visible = :visible', 
-			array('name'=>'%'.$dep.'%', 'visible'=>'1')));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+			array('name'=>'%'.$course.'%', 'visible'=>'1')));
+	} else if ($category != ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat', 
 			array('cat'=>$category, 'visible'=>'1'));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
 	}	
 }
 
-function get_amount_used_courses($dep) {
+function get_amount_used_courses($course) {
 	global $category;
 	global $DB;
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+	if ($category == ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
 			array('visible'=>'1'));
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+	} else if ($category == ALL_CATEGORIES and $course != ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'name'=>'%'.$dep.'%'));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+			array('visible'=>'1', 'name'=>'%'.$course.'%'));
+	} else if ($category != ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
 			array('visible'=>'1', 'cat'=>$category));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
 	}
 }
 
@@ -108,37 +108,37 @@ header('Content-Disposition: attachment; filename="sample.csv"');
 
 $fp = fopen('php://output', 'w');
 
-$head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
+$head = array(get_string('lb_choose_course', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
 fputcsv($fp, $head);
 
-$depname = get_string('lb_all_dep', 'report_coursestats');
-$co_created = get_amount_created_courses(ALL_DEP);
-$co_used = get_amount_used_courses(ALL_DEP);
+$coursename = get_string('lb_all_courses', 'report_coursestats');
+$co_created = get_amount_created_courses(ALL_COURSES);
+$co_used = get_amount_used_courses(ALL_COURSES);
 if ($co_created > 0) {
 	$co_percent = number_format(($co_used / $co_created) * 100, 2);
 } else {
 	$co_percent = '0';
 }
 	
-$dep_data = array($depname, $co_created, $co_used, $co_percent);
+$course_data = array($coursename, $co_created, $co_used, $co_percent);
 
-fputcsv($fp, $dep_data);
+fputcsv($fp, $course_data);
 
-foreach ($departments as $depto) {
-	$co_created = get_amount_created_courses($depto['cod']);
-	$co_used = get_amount_used_courses($depto['cod']);
+foreach ($courses as $course) {
+	$co_created = get_amount_created_courses($course['cod']);
+	$co_used = get_amount_used_courses($course['cod']);
 	
-	$depname = $depto['name'];
+	$coursename = $course['cod'] . ' - ' . $course['name'];
 	
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2);
 	} else {
 		$co_percent = '0';
 	}
-	$dep_data = array($depname, $co_created, $co_used, $co_percent);
-	fputcsv($fp, $dep_data);
+	$course_data = array($coursename, $co_created, $co_used, $co_percent);
+	fputcsv($fp, $course_data);
 
 }
 
