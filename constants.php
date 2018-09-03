@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 define('ALL_DEP', 'all');
+define('ALL_COURSES', 'all');
 define('ALL_USAGE_TYPE', 'all');
 define('ALL_CATEGORIES', -1);
 define('NULL_USAGE_TYPE', 'null');

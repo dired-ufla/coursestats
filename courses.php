@@ -30,75 +30,83 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
-function get_amount_created_courses($dep) {
+function get_amount_created_courses($course) {
 	global $category;
 	global $DB;
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+	if ($category == ALL_CATEGORIES and $course == ALL_COURSES) {
 		return ($DB->count_records(COURSE_TABLE_NAME, 
 			array('visible'=>'1')) - 1);
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+	} else if ($category == ALL_CATEGORIES and $course != ALL_COURSES) {
 		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false). ' AND co.visible = :visible', 
-			array('name'=>'%'.$dep.'%', 'visible'=>'1')));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+			array('name'=>'%'.$course.'%', 'visible'=>'1')));
+	} else if ($category != ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat', 
 			array('cat'=>$category, 'visible'=>'1'));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
 	}	
 }
 
-function get_amount_used_courses($dep) {
+function get_amount_used_courses($course) {
 	global $category;
 	global $DB;
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
+	if ($category == ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
 			array('visible'=>'1'));
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
+	} else if ($category == ALL_CATEGORIES and $course != ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'name'=>'%'.$dep.'%'));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
+			array('visible'=>'1', 'name'=>'%'.$course.'%'));
+	} else if ($category != ALL_CATEGORIES and $course == ALL_COURSES) {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
 			array('visible'=>'1', 'cat'=>$category));
 	} else {
 		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
 	}
 }
 
-$departments = array(
-	array('cod'=>'gae', 'acr'=>'DAE', 'name'=>'DAE - Administração e Economia'),
-	array('cod'=>'gag', 'acr'=>'DAG', 'name'=>'DAG - Agricultura'),
-	array('cod'=>'gbi', 'acr'=>'DBI', 'name'=>'DBI - Biologia'),
-	array('cod'=>'gca', 'acr'=>'DCA', 'name'=>'DCA - Ciência dos Alimentos'),
-	array('cod'=>'gcc', 'acr'=>'DCC', 'name'=>'DCC - Ciência da Computação'),
-	array('cod'=>'gcs', 'acr'=>'DCS', 'name'=>'DCS - Ciência do Solo'),
-	array('cod'=>'gsa', 'acr'=>'DSA', 'name'=>'DSA - Ciências da Saúde'),
-	array('cod'=>'gex', 'acr'=>'DEX', 'name'=>'DEX - Ciências Exatas'),
-	array('cod'=>'gef', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
-	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
-	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
-	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
-	array('cod'=>'gfd', 'acr'=>'DEF', 'name'=>'DEF - Educação Física'),
-	array('cod'=>'gne', 'acr'=>'DEG', 'name'=>'DEG - Engenharia'),
-	array('cod'=>'gel', 'acr'=>'DEL', 'name'=>'DEL - Ensino da Linguagem'),
-	array('cod'=>'get', 'acr'=>'DEB', 'name'=>'DEN - Entomologia'),
-	array('cod'=>'ges', 'acr'=>'DES', 'name'=>'DES - Estatística'),
-	array('cod'=>'gfi', 'acr'=>'DFI', 'name'=>'DFI - Física'),
-	array('cod'=>'gfp', 'acr'=>'DFP', 'name'=>'DFP - Fitopatologia'),
-	array('cod'=>'gnu', 'acr'=>'DNU', 'name'=>'DNU - Nutrição'),
-	array('cod'=>'gmv', 'acr'=>'DMV', 'name'=>'DMV - Medicina Veterinária'),
-	array('cod'=>'gqi', 'acr'=>'DQI', 'name'=>'DQI - Química'),
-	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia'),
-	array('cod'=>'prg', 'acr'=>'PRG', 'name'=>'PRG - Graduação')
+$courses = array(
+	array('cod'=>'G001', 'acr'=>'G001', 'name'=>'Agronomia'),
+	array('cod'=>'G002', 'acr'=>'G002', 'name'=>'Zootecnia'),
+	array('cod'=>'G003', 'acr'=>'G003', 'name'=>'Engenharia Agrícola'),
+	array('cod'=>'G005', 'acr'=>'G005', 'name'=>'Engenharia Florestal'),
+	array('cod'=>'G007', 'acr'=>'G007', 'name'=>'Medicina Veterinária'),
+	array('cod'=>'G009', 'acr'=>'G009', 'name'=>'Administração'),
+	array('cod'=>'G010', 'acr'=>'G010', 'name'=>'Ciência da Computação'),
+	array('cod'=>'G011', 'acr'=>'G011', 'name'=>'Engenharia de Alimentos'),
+	array('cod'=>'G012', 'acr'=>'G012', 'name'=>'Ciências Biológicas'),
+	array('cod'=>'G013', 'acr'=>'G013', 'name'=>'Química (Licenciatura)'),
+	array('cod'=>'G014', 'acr'=>'G014', 'name'=>'Sistemas de Informação'),
+	array('cod'=>'G015', 'acr'=>'G015', 'name'=>'Matemática'),
+	array('cod'=>'G018', 'acr'=>'G018', 'name'=>'Física'),
+	array('cod'=>'G019', 'acr'=>'G019', 'name'=>'Engenharia Ambiental e Sanitária'),
+	array('cod'=>'G020', 'acr'=>'G020', 'name'=>'Ciências Biológicas'),
+	array('cod'=>'G021', 'acr'=>'G021', 'name'=>'Química (Bacharelado)'),
+	array('cod'=>'G022', 'acr'=>'G022', 'name'=>'Engenharia de Controle e Automação'),
+	array('cod'=>'G023', 'acr'=>'G023', 'name'=>'Nutrição'),
+	array('cod'=>'G024', 'acr'=>'G024', 'name'=>'Filosofia'),
+	array('cod'=>'G025', 'acr'=>'G025', 'name'=>'Letras'),
+	array('cod'=>'G026', 'acr'=>'G026', 'name'=>'Administração Pública'),
+	array('cod'=>'G027', 'acr'=>'G027', 'name'=>'Direito'),
+	array('cod'=>'G028', 'acr'=>'G028', 'name'=>'Educação Física (Licenciatura)'),
+	array('cod'=>'G029', 'acr'=>'G029', 'name'=>'Educação Física (Bacharelado)'),
+	array('cod'=>'G030', 'acr'=>'G030', 'name'=>'ABI Engenharia'),
+	array('cod'=>'G031', 'acr'=>'G031', 'name'=>'Engenharia Civil'),
+	array('cod'=>'G032', 'acr'=>'G032', 'name'=>'Engenharia Mecânica'),
+	array('cod'=>'G033', 'acr'=>'G033', 'name'=>'Engenharia Química'),
+	array('cod'=>'G034', 'acr'=>'G034', 'name'=>'Engenharia de Materiais'),
+	array('cod'=>'G035', 'acr'=>'G035', 'name'=>'Medicina'),
+	array('cod'=>'G036', 'acr'=>'G036', 'name'=>'Pedagogia')
 ); 
 
 
-$dept_acr_array = array('DAE', 'DAG', 'DBI', 'DCA', 'DCC', 'DCS', 'DSA', 'DEX', 
-	'DCF', 'DCH', 'DIR', 'DED', 'DEF', 'DEG', 'DEL', 'DEB', 'DES', 'DFI', 'DFP', 
-	'DNU', 'DMV', 'DQI', 'DZO', 'PRG');
+$courses_acr_array = array('G001', 'G002', 'G003', 'G005', 'G007', 'G009', 'G010', 'G011', 
+	'G012', 'G013', 'G014', 'G015', 'G018', 'G019', 'G020', 'G021', 'G022', 'G023', 'G024', 
+	'G025', 'G026', 'G027', 'G028', 'G029', 'G030', 'G031', 
+	'G032', 'G033', 'G034', 'G035', 'G036');
 
 $url = new moodle_url($CFG->wwwroot . '/report/coursestats/index.php');
 $link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
@@ -119,8 +127,8 @@ $table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_stri
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
 $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
-$co_created = get_amount_created_courses(ALL_DEP);
-$co_used = get_amount_used_courses(ALL_DEP);
+$co_created = get_amount_created_courses(ALL_COURSES);
+$co_used = get_amount_used_courses(ALL_COURSES);
 if ($co_created > 0) {
 	$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
 } else {
@@ -133,15 +141,15 @@ $created_courses_array = array();
 $used_courses_array = array();
 $percentage_used_courses_array = array();
 
-foreach ($departments as $depto) {
-	$co_created = get_amount_created_courses($depto['cod']);
-	$co_used = get_amount_used_courses($depto['cod']);
+foreach ($courses as $course) {
+	$co_created = get_amount_created_courses($course['cod']);
+	$co_used = get_amount_used_courses($course['cod']);
 	
 	$created_courses_array[] = $co_created;
 	$used_courses_array[] = $co_used;
 	
-	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $depto['acr'] . 
-		'&dep=' . $depto['cod'] . '>' . $depto['name'] . '</a>';
+	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $category . '&depname=' . $course['acr'] . 
+		'&dep=' . $course['cod'] . '>' . $course['name'] . '</a>';
 	
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
@@ -165,7 +173,7 @@ if (class_exists('core\chart_bar')) {
 	$chart_stacked->add_series($percentage_used_courses_serie);
 	$chart_stacked->add_series($created_courses_serie);
 	$chart_stacked->add_series($used_courses_serie);
-	$chart_stacked->set_labels($dept_acr_array);
+	$chart_stacked->set_labels($courses_acr_array);
 	
 	echo $OUTPUT->render_chart($chart_stacked, false);
 	//echo $OUTPUT->render_chart($chart_percentage, false);

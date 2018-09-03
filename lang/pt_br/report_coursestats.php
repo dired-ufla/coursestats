@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Estatísticas de uso dos cursos';
+$string['pluginname'] = 'Estatísticas de utilização de cursos';
 $string['link_details'] = 'Mais detalhes';
 $string['link_back'] = 'Voltar';
 $string['link_csv'] = 'Gerar arquivo CSV';
