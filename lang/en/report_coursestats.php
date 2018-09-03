@@ -42,12 +42,12 @@ $string['lb_choose_dep'] = 'Department';
 $string['lb_all_categories'] = 'All categories';
 $string['lb_all_dep'] = 'All departments';
 $string['lb_null_usage'] = 'None';
-$string['lb_forum_usage'] = 'Only Forum';
+$string['lb_forum_usage'] = 'Announcement Forum';
 $string['lb_used_courses'] = 'Amount of used courses';
 $string['lb_not_used_courses'] = 'Amount of not used courses';
 $string['lb_courses_created_amount'] = 'Amount of created courses';
 $string['lb_forum_usage_help'] = 'The course is being used only for communication by means of the <b>Announcements Forum</b>.';
-$string['lb_repository_usage'] = 'Only Repository';
+$string['lb_repository_usage'] = 'Repository';
 $string['lb_repository_usage_help'] = 'The course is being used only as a file repository. That is, the teacher has created just 
   <b>File</b>, <b>Folder</b> or <b>URL</b> modules in this course.';
 $string['lb_activity_usage'] = 'Activities';
