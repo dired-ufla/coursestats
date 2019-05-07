@@ -17,6 +17,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v2.7.6: in this version, the course module updates are taken into account .
 - v2.7.5: in this version, the plugin does not consider hidden courses anymore.
 - v2.7: this version fixes some security issues as well as includes new features, such as "category statistics" and "export to CSV" functionality  
 - v2.6.1: this version fixes an error regarding the amount of courses

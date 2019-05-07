@@ -30,6 +30,10 @@ $observers = array(
         'callback'  => 'report_coursestats_observer::course_module_created',
     ),
 	array(
+        'eventname' => '\core\event\course_module_updated',
+        'callback'  => 'report_coursestats_observer::course_module_updated',
+    ),
+	array(
         'eventname' => '\mod_forum\event\discussion_created',
         'callback'  => 'report_coursestats_observer::forum_discussion_created',
     ),
