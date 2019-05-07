@@ -55,42 +55,50 @@ class report_coursestats_observer {
 		}
 	}
 	
-	public static function course_module_created(\core\event\course_module_created $event) {
+	private static function handle_module($event) {
 		global $DB;
        	
-       	/* 
+		/* 
 		* If the module name is 'url', 'folder' or 'resource', then the usage type is 'repository'.
 		* Otherwise, the usage type is 'activity' 
 		*/
-       	$usage_type = '';
-       	if (in_array($event->other['modulename'], unserialize(REPOSITORY_MODULES))) {
-			$usage_type	= REPOSITORY_USAGE_TYPE;
+		$usage_type = '';
+		if (in_array($event->other['modulename'], unserialize(REPOSITORY_MODULES))) {
+ 			$usage_type	= REPOSITORY_USAGE_TYPE;
 		} else {
-			$usage_type	= ACTIVITY_USAGE_TYPE;
+ 			$usage_type	= ACTIVITY_USAGE_TYPE;
 		}
-		
+
 		// Get the course, based on its id
 		$course = $DB->get_record(COURSE_TABLE_NAME, array('id'=>$event->courseid));
-		       	
-       	if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
-			$record = new stdClass();
-			$record->courseid = $event->courseid;
-			$record->prev_usage_type = NULL_USAGE_TYPE;
-			$record->curr_usage_type = $usage_type;			 
-			$record->last_update =  time();
-			$record->categoryid = $course->category;
-			$DB->insert_record(PLUGIN_TABLE_NAME, $record);
+				
+		if (!$DB->record_exists(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid))) {
+ 			$record = new stdClass();
+ 			$record->courseid = $event->courseid;
+ 			$record->prev_usage_type = NULL_USAGE_TYPE;
+ 			$record->curr_usage_type = $usage_type;			 
+ 			$record->last_update =  time();
+ 			$record->categoryid = $course->category;
+ 			$DB->insert_record(PLUGIN_TABLE_NAME, $record);
 		} else {
-			$result = $DB->get_record(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid));
-			if ($result->curr_usage_type === FORUM_USAGE_TYPE or 
-				($result->curr_usage_type === REPOSITORY_USAGE_TYPE and $usage_type === ACTIVITY_USAGE_TYPE)) {
-				$result->prev_usage_type = $result->curr_usage_type;
-				$result->curr_usage_type = $usage_type;		
-				$result->categoryid = $course->category;
-				$result->last_update =  time();
-				$DB->update_record(PLUGIN_TABLE_NAME, $result); 
-			}			
+ 			$result = $DB->get_record(PLUGIN_TABLE_NAME, array('courseid'=>$event->courseid));
+ 			if ($result->curr_usage_type === FORUM_USAGE_TYPE or 
+	 			($result->curr_usage_type === REPOSITORY_USAGE_TYPE and $usage_type === ACTIVITY_USAGE_TYPE)) {
+	 			$result->prev_usage_type = $result->curr_usage_type;
+	 			$result->curr_usage_type = $usage_type;		
+	 			$result->categoryid = $course->category;
+	 			$result->last_update =  time();
+	 			$DB->update_record(PLUGIN_TABLE_NAME, $result); 
+ 			}			
 		}
+	}
+
+	public static function course_module_created(\core\event\course_module_created $event) {
+		self::handle_module($event);
+	}
+
+	public static function course_module_updated(\core\event\course_module_updated $event) {
+		self::handle_module($event);
 	}
 
 }
