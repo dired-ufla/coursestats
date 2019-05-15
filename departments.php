@@ -118,9 +118,9 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' - ' . $link);
 
 $table = new html_table();
-$table->size = array( '55%', '15%', '15%', '15%');
+$table->size = array( '60%', '10%', '10%', '10%', '10%');
 $table->head = array(get_string('lb_choose_dep', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
-	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
+	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_not_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
 $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.DEPARTMENTS_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
 $co_created = get_amount_created_courses(ALL_DEP);
@@ -130,8 +130,17 @@ if ($co_created > 0) {
 } else {
 	$co_percent = '-';
 }
-	
-$table->data[] = array($link, $co_created, $co_used, $co_percent);
+
+$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+	$co_created . '</a>';
+
+$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+	$co_used . '</a>';
+
+$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+	($co_created - $co_used) . '</a>';
+
+$table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
 
 $created_courses_array = array();
 $used_courses_array = array();
@@ -154,7 +163,18 @@ foreach ($departments as $depto) {
 		$co_percent = '-';
 		$percentage_used_courses_array[] = 0;
 	}
-	$table->data[] = array($link, $co_created, $co_used, $co_percent);
+
+	$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+		$co_created . '</a>';
+	
+	$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+		$co_used . '</a>';
+	
+	$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+		($co_created - $co_used) . '</a>';
+	
+	$table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
+	
 }
  
 if (class_exists('core\chart_bar')) {
