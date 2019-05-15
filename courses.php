@@ -39,33 +39,33 @@ echo $OUTPUT->header();
 
 if ($type == CREATED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {course} co WHERE co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co WHERE co.visible = :visible ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else if ($type == CREATED_COURSES && $category != ALL_CATEGORIES) {
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {course} co WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 } else if ($type == USED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else if ($type == USED_COURSES && $category != ALL_CATEGORIES) {
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 } else if ($type == NOTUSED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else { // ($type == NOTUSED_COURSES && $category != ALL_CATEGORIES)
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT * FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 }
 
