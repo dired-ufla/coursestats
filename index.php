@@ -57,9 +57,9 @@ echo $OUTPUT->header();
 $result = $DB->get_records(COURSE_CATEGORIES_TABLE_NAME, null, 'name');
 		
 $table = new html_table();
-$table->size = array( '55%', '15%', '15%', '15%');
+$table->size = array( '60%', '10%', '10%', '10%', '10%');
 $table->head = array(get_string('lb_category', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
-	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
+	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_not_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
 // All categories
 $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . ALL_CATEGORIES . '>' . 
@@ -72,7 +72,16 @@ if ($co_created > 0) {
 	$co_percent = '-';
 }
 
-$table->data[] = array($link, $co_created, $co_used, $co_percent);
+$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . CREATED_COURSES . '&category=' . ALL_CATEGORIES . '>' . 
+	$co_created . '</a>';
+
+$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . USED_COURSES . '&category=' . ALL_CATEGORIES . '>' . 
+	$co_used . '</a>';
+
+$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . NOTUSED_COURSES . '&category=' . ALL_CATEGORIES . '>' . 
+	($co_created - $co_used) . '</a>';
+
+$table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
 
 // Each category
 $cat_array = array();
@@ -95,9 +104,19 @@ foreach ($result as $cs) {
 		$co_percent = '-';
 		$percentage_used_courses_array[] = 0;
 	}
-    
+	
     $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $cs->id . '>' . $cs->name . '</a>';
-    $row = array($link, $co_created, $co_used, $co_percent);
+	
+	$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . CREATED_COURSES . '&category=' . $cs->id . '>' . 
+		$co_created . '</a>';
+
+	$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . USED_COURSES . '&category=' . $cs->id . '>' . 
+		$co_used . '</a>';
+
+	$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . NOTUSED_COURSES . '&category=' . $cs->id . '>' . 
+		($co_created - $co_used) . '</a>';
+
+	$row = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
 	$table->data[] = $row;
 }
 

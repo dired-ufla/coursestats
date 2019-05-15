@@ -37,3 +37,6 @@ define('FORUM_TABLE_NAME', 'forum');
 define('COURSE_TABLE_NAME', 'course');
 define('COURSE_CATEGORIES_TABLE_NAME', 'course_categories');
 define('REPOSITORY_MODULES', serialize(array('resource', 'url', 'folder')));
+define('CREATED_COURSES', 'created');
+define('USED_COURSES', 'used');
+define('NOTUSED_COURSES', 'notused');
