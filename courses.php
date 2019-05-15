@@ -75,7 +75,7 @@ $table = new html_table();
 $table->head = array(	get_string('lb_course_name', 'report_coursestats'));
 foreach ($rs as $cs) {
     $row = array();
-    $row[] = '<a href=' . $CFG->wwwroot . '/course/view.php?id=' . $cs->courseid . '>' . $cs->shortname . '</a>';
+    $row[] = '<a href=' . $CFG->wwwroot . '/course/view.php?id=' . $cs->id . '>' . $cs->shortname . '</a>';
     $table->data[] = $row;
 }
 $rs->close();
