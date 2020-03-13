@@ -27,7 +27,7 @@ $string['pluginname'] = 'Estatísticas de utilização de cursos';
 $string['link_details'] = 'Mais detalhes';
 $string['link_back'] = 'Voltar';
 $string['link_csv'] = 'Gerar arquivo CSV';
-$string['lb_course_name'] = 'Nome do curso';
+$string['lb_course_name'] = 'Nome breve';
 $string['lb_usage_type_name'] = 'Tipo de uso';
 $string['lb_usage_type_desc'] = 'Descrição';
 $string['lb_courses_amount'] = 'Qtde. cursos';
@@ -60,4 +60,7 @@ $string['lb_activity_usage_help'] = 'Cursos que estão sendo efetivamente utiliz
 $string['lb_chart_series_types_of_use'] = 'Estatísticas de uso de cursos';
 $string['lb_chart_series_used_courses'] = 'Estatísticas geral de cursos';
 $string['lb_there_are_no_courses_stats'] = 'Não há estatísticas de uso a serem apresentadas no momento!';
+
+$string['lb_course_fullname'] = 'Nome completo';
+$string['lb_professors'] = 'Professores';
 

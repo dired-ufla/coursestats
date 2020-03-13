@@ -36,10 +36,6 @@ $backto = optional_param('backto', DEPARTMENTS_PAGE, PARAM_ALPHANUM);
 
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 
-$url = new moodle_url($CFG->wwwroot . '/report/coursestats/main.php?backto='.$backto.'&category=' . $category . '&depname=' . $depname . '&dep=' . $dep);
-$link = html_writer::link($url, get_string('link_back', 'report_coursestats'));
-
-
 if ($category == ALL_CATEGORIES) {
 	$catname = get_string('lb_all_categories', 'report_coursestats');	
 	
@@ -65,30 +61,23 @@ if ($category == ALL_CATEGORIES) {
 	}
 }
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . $catname. ' (' . $depname . ') - ' . $link);
+header('Content-Type: application/excel');
+header('Content-Disposition: attachment; filename="sample.csv"');
 
-$csv_link = new moodle_url($CFG->wwwroot . '/report/coursestats/csvdetails.php?usagetype=' . $usagetype . '&category=' . $category. '&dep='.$dep. '&depname='.$depname);
+$fp = fopen('php://output', 'w');
 
-echo '<p align="center">' . html_writer::link($csv_link, get_string('link_csv', 'report_coursestats')) . '</p>';
-
-
-$table = new html_table();
-$table->head = array(	get_string('lb_course_name', 'report_coursestats'),
+$head = array(	get_string('lb_course_name', 'report_coursestats'),
 						get_string('lb_course_fullname', 'report_coursestats'), 
 						get_string('lb_professors', 'report_coursestats'));
+fputcsv($fp, $head);
+
 foreach ($rs as $cs) {
     $row = array();
-    $row[] = '<a href=' . $CFG->wwwroot . '/course/view.php?id=' . $cs->courseid . '>' . $cs->shortname . '</a>';
+    $row[] = $cs->shortname;
     $row[] = substr($cs->fullname, 0, strpos($cs->fullname, ")") + 2);
     $row[] = substr($cs->fullname, strpos($cs->fullname, ")") + 4);
 
-   $table->data[] = $row;
+    fputcsv($fp, $row);
 }
 
-$rs->close();
-
-echo html_writer::table($table);
-
-
-echo $OUTPUT->footer();
+fclose($fp);
