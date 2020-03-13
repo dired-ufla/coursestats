@@ -20,6 +20,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v2.9: in this version, there are columns for course fullname and professors.
 - v2.8: in this version, users may see a list of created, used or non-used courses.
 - v2.7.1: in this version, the course module updates are taken into account.
 - v2.7: this version fixes some security issues as well as includes new features, such as "departments statistics" and "export to CSV" functionality
