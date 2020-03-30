@@ -39,43 +39,42 @@ echo $OUTPUT->header();
 
 if ($type == CREATED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co WHERE co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {course} co WHERE co.visible = :visible ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else if ($type == CREATED_COURSES && $category != ALL_CATEGORIES) {
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {course} co WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 } else if ($type == USED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else if ($type == USED_COURSES && $category != ALL_CATEGORIES) {
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 } else if ($type == NOTUSED_COURSES && $category == ALL_CATEGORIES) {
     $catname = get_string('lb_all_categories', 'report_coursestats');	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
 			array('visible'=>'1'));
 } else { // ($type == NOTUSED_COURSES && $category != ALL_CATEGORIES)
     $cat = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, array('id'=>$category));
 	$catname = $cat->name;
 	
-	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
+	$rs = $DB->get_recordset_sql('SELECT co.id, co.shortname, co.fullname FROM {course} co LEFT JOIN {report_coursestats} cs ON co.id = cs.courseid WHERE co.category = :cat AND co.visible = :visible AND cs.courseid IS NULL ORDER BY co.shortname', 
 			array('cat'=>$category, 'visible'=>'1'));
 }
 
 echo $OUTPUT->heading(get_string('lb_category', 'report_coursestats') . ': ' . $catname . ' - ' . $link);
 
 $table = new html_table();
-$table->head = array(	get_string('lb_course_name', 'report_coursestats'));
+$table->head = array(get_string('lb_course_name', 'report_coursestats'), get_string('lb_course_fullname', 'report_coursestats'));
 foreach ($rs as $cs) {
-    $row = array();
-    $row[] = '<a href=' . $CFG->wwwroot . '/course/view.php?id=' . $cs->id . '>' . $cs->shortname . '</a>';
+    $row = array('<a href=' . $CFG->wwwroot . '/course/view.php?id=' . $cs->id . '>' . $cs->shortname . '</a>', $cs->fullname);
     $table->data[] = $row;
 }
 $rs->close();
