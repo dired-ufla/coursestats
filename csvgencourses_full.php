@@ -49,22 +49,22 @@ function get_amount_created_courses($course) {
 	}	
 }
 
-function get_amount_used_courses($course) {
+function get_amount_used_courses($course, $type) {
 	global $category;
 	global $DB;
 	
 	if ($category == ALL_CATEGORIES and $course == ALL_COURSES) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
-			array('visible'=>'1'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible', 
+			array('type'=>$type, 'visible'=>'1'));
 	} else if ($category == ALL_CATEGORIES and $course != ALL_COURSES) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'name'=>'%'.$course.'%'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE cs.curr_usage_type = :type AND co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
+			array('type'=>$type, 'visible'=>'1', 'name'=>'%'.$course.'%'));
 	} else if ($category != ALL_CATEGORIES and $course == ALL_COURSES) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
-			array('visible'=>'1', 'cat'=>$category));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND co.category = :cat', 
+			array('type'=>$type, 'visible'=>'1', 'cat'=>$category));
 	} else {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
+		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE cs.curr_usage_type = :type AND co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
+			array('type'=>$type, 'visible'=>'1', 'cat'=>$category, 'name'=>'%'.$course.'%'));
 	}
 }
 
@@ -109,17 +109,19 @@ header('Content-Disposition: attachment; filename="sample.csv"');
 $fp = fopen('php://output', 'w');
 
 $head = array(get_string('lb_choose_course', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
-	get_string('lb_used_courses', 'report_coursestats'));
+	get_string('lb_forum_usage', 'report_coursestats'), get_string('lb_repository_usage', 'report_coursestats'), get_string('lb_activity_usage', 'report_coursestats'));
 
 fputcsv($fp, $head);
 
 foreach ($courses as $course) {
 	$co_created = get_amount_created_courses($course['cod']);
-	$co_used = get_amount_used_courses($course['cod']);
+	$co_forum_usage = get_amount_used_courses($course['cod'], FORUM_USAGE_TYPE);
+	$co_repository_usage = get_amount_used_courses($course['cod'], REPOSITORY_USAGE_TYPE);
+	$co_activity_usage = get_amount_used_courses($course['cod'], ACTIVITY_USAGE_TYPE);
 	
 	$coursename = $course['cod'] . ' - ' . $course['name'];
 	
-	$course_data = array($coursename, $co_created, $co_used);
+	$course_data = array($coursename, $co_created, $co_forum_usage, $co_repository_usage, $co_activity_usage);
 	fputcsv($fp, $course_data);
 
 }

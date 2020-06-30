@@ -126,7 +126,7 @@ $table->size = array( '60%', '10%', '10%', '10%', '10%');
 $table->head = array(get_string('lb_choose_course', 'report_coursestats'), get_string('lb_courses_created_amount', 'report_coursestats'),
 	get_string('lb_used_courses', 'report_coursestats'), get_string('lb_not_used_courses', 'report_coursestats'), get_string('lb_percent_of_used_courses', 'report_coursestats'));
 
-$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.COURSES_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_courses', 'report_coursestats') . '&dep=' . ALL_COURSES . '>' .get_string('lb_all_courses', 'report_coursestats') . '</a>';
+/* $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.COURSES_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_courses', 'report_coursestats') . '&dep=' . ALL_COURSES . '>' .get_string('lb_all_courses', 'report_coursestats') . '</a>';
 $co_created = get_amount_created_courses(ALL_COURSES);
 $co_used = get_amount_used_courses(ALL_COURSES);
 if ($co_created > 0) {
@@ -145,6 +145,7 @@ $link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst
 	($co_created - $co_used) . '</a>';
 
 $table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
+ */
 
 $created_courses_array = array();
 $used_courses_array = array();
@@ -201,9 +202,15 @@ if (class_exists('core\chart_bar')) {
 $url_csv = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgencourses.php?category=' . $category);
 $link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursestats'));
 
-echo '<p align="center">' . $link_csv . '</p>';
+$url_csv_full = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgencourses_full.php?category=' . $category);
+$link_csv_full = html_writer::link($url_csv_full, get_string('link_csv_full', 'report_coursestats'));
+
+echo '<p align="center">' . $link_csv . ' | ' . $link_csv_full .'</p>';
+echo '<p align="center"><strong>Atenção</strong>: é comum que possa haver uma mesma sala virtual relacionada a dois ou mais cursos diferentes!</p>';
 
 echo html_writer::table($table);
+
+
 
 echo $OUTPUT->footer();
 

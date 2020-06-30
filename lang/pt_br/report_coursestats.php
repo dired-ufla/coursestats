@@ -27,6 +27,7 @@ $string['pluginname'] = 'Estatísticas de utilização de cursos';
 $string['link_details'] = 'Mais detalhes';
 $string['link_back'] = 'Voltar';
 $string['link_csv'] = 'Gerar arquivo CSV';
+$string['link_csv_full'] = 'Gerar arquivo CSV detalhado';
 $string['lb_course_name'] = 'Nome breve';
 $string['lb_usage_type_name'] = 'Tipo de uso';
 $string['lb_usage_type_desc'] = 'Descrição';
