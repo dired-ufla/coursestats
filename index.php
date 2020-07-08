@@ -105,7 +105,16 @@ foreach ($result as $cs) {
 		$percentage_used_courses_array[] = 0;
 	}
 	
-    $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $cs->id . '>' . $cs->name . '</a>';
+	$catfullname = $cs->name;
+	// check if category has parent
+	if ($cs->depth == 2) {
+		$parents = explode("/", $cs->path);
+		$id = $parents[count($parents) - 2]; 
+		$temp = $DB->get_record(COURSE_CATEGORIES_TABLE_NAME, ['id' => $id]);
+		$catfullname = $temp->name . ' -> ' . $catfullname;
+	}
+
+    $link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?category=' . $cs->id . '>' . $catfullname . '</a>';
 	
 	$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses.php?type=' . CREATED_COURSES . '&category=' . $cs->id . '>' . 
 		$co_created . '</a>';
