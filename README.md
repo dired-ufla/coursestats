@@ -17,6 +17,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v3.0: in this version, users may see the category parent name.
 - v2.9: in this version, users may see the courses' full name.
 - v2.8: in this version, users may see a list of created, used or non-used courses.
 - v2.7.6: in this version, the course module updates are taken into account.
