@@ -31,9 +31,8 @@ admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
 function courseNameContains($courseName, $acronyms) {
-
 	foreach($acronyms as $acr) {
-		if (substr($string, 0, strlen($acr)) === $acr) {
+		if (substr($courseName, 0, strlen($acr)) === strtoupper($acr)) {
 			return true;
 		}
 	}
@@ -102,7 +101,7 @@ $departments = array(
 	array('cod'=>'gch', 'acr'=>'DCH/FAELCH', 'name'=>'Ciências Humanas'),
 	array('cod'=>'gcs,cso', 'acr'=>'DCS/ESAL', 'name'=>'Ciência do Solo'),
 	array('cod'=>'gea,lea', 'acr'=>'DEA/EENG', 'name'=>'Engenharia Agrícola'),
-	array('cod'=>'gec,', 'acr'=>'DEC/ICN', 'name'=>'Ecologia e Conservação'),
+	array('cod'=>'gec', 'acr'=>'DEC/ICN', 'name'=>'Ecologia e Conservação'),
 	array('cod'=>'gde,edu', 'acr'=>'DED/FAELCH', 'name'=>'Educação'),
 	array('cod'=>'gfd,efd', 'acr'=>'DEF/FCS', 'name'=>'Educação Física'),
 	array('cod'=>'gne,eng,meg,leg', 'acr'=>'DEG/EENG', 'name'=>'Engenharia'),
