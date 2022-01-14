@@ -67,7 +67,7 @@ function get_amount_used_courses($dep) {
 	global $category;
 	global $DB;
 	$cods = explode(",", $dep);
-	$courses = array();
+	$courses;
 	
 	if ($category == ALL_CATEGORIES) {
 		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
@@ -161,9 +161,11 @@ foreach ($departments as $depto) {
 	$created_courses_array[] = $co_created;
 	$used_courses_array[] = $co_used;
 	
-	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.DEPARTMENTS_PAGE.'&category=' . $category . '&depname=' . $depto['acr'] . 
-		'&dep=' . $depto['cod'] . '>' . $depto['acr'] . ' - ' . $depto['name'] . '</a>';
+//	$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.DEPARTMENTS_PAGE.'&category=' . $category . '&depname=' . $depto['acr'] . 
+//		'&dep=' . $depto['cod'] . '>' . $depto['acr'] . ' - ' . $depto['name'] . '</a>';
 	
+	$link = $depto['acr'] . ' - ' . $depto['name'];
+
 	if ($co_created > 0) {
 		$co_percent = number_format(($co_used / $co_created) * 100, 2) . '%';
 		$percentage_used_courses_array[] = number_format(($co_used / $co_created) * 100, 2);

@@ -30,73 +30,98 @@ require(__DIR__. '/constants.php');
 admin_externalpage_setup('reportcoursestats', '', null, '', array('pagelayout'=>'report'));
 $category = optional_param('category', ALL_CATEGORIES, PARAM_INT);
 
+function courseNameContains($courseName, $acronyms) {
+	foreach($acronyms as $acr) {
+		if (substr($courseName, 0, strlen($acr)) === strtoupper($acr)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 function get_amount_created_courses($dep) {
 	global $category;
 	global $DB;
+	$cods = explode(",", $dep);
+	$courses = array();
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
-		return ($DB->count_records(COURSE_TABLE_NAME, 
-			array('visible'=>'1')) - 1);
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
-		return ($DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE ' . $DB->sql_like('co.shortname', ':name', false, false). ' AND co.visible = :visible', 
-			array('name'=>'%'.$dep.'%', 'visible'=>'1')));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat', 
-			array('cat'=>$category, 'visible'=>'1'));
+	if ($category == ALL_CATEGORIES) {
+		$courses = $DB->get_records(COURSE_TABLE_NAME, 
+			array('visible'=>'1'));
 	} else {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co WHERE co.visible = :visible AND co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
-	}	
+		$courses = $DB->get_records(COURSE_TABLE_NAME, array('visible'=>'1', 'category' => $category));
+	} 
+
+	$count = 0;
+	foreach($courses as $course) {
+		if (courseNameContains($course->shortname, $cods)) {
+			$count++;
+		}
+	}
+
+	return $count;
 }
 
 function get_amount_used_courses($dep) {
 	global $category;
 	global $DB;
+	$cods = explode(",", $dep);
+	$courses;
 	
-	if ($category == ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
+	if ($category == ALL_CATEGORIES) {
+		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
 			array('visible'=>'1'));
-	} else if ($category == ALL_CATEGORIES and $dep != ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'name'=>'%'.$dep.'%'));
-	} else if ($category != ALL_CATEGORIES and $dep == ALL_DEP) {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
-			array('visible'=>'1', 'cat'=>$category));
 	} else {
-		return $DB->count_records_sql('SELECT COUNT(*) FROM {course} co JOIN {report_coursestats} cs ON co.id = cs.courseid  WHERE co.visible = :visible AND  co.category = :cat AND ' . $DB->sql_like('co.shortname', ':name', false, false), 
-			array('visible'=>'1', 'cat'=>$category, 'name'=>'%'.$dep.'%'));
+		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
+			array('visible'=>'1', 'cat'=>$category));
+	} 
+
+	$count = 0;
+	foreach($courses as $course) {
+		if (courseNameContains($course->shortname, $cods)) {
+			$count++;
+		}
 	}
+
+	return $count;
 }
 
 $departments = array(
-	array('cod'=>'gae', 'acr'=>'DAE', 'name'=>'DAE - Administração e Economia'),
-	array('cod'=>'gag', 'acr'=>'DAG', 'name'=>'DAG - Agricultura'),
-	array('cod'=>'gat', 'acr'=>'GAT', 'name'=>'DAT - Automática'),
-	array('cod'=>'gbi', 'acr'=>'DBI', 'name'=>'DBI - Biologia'),
-	array('cod'=>'gca', 'acr'=>'DCA', 'name'=>'DCA - Ciência dos Alimentos'),
-	array('cod'=>'gcc', 'acr'=>'DCC', 'name'=>'DCC - Ciência da Computação'),
-	array('cod'=>'gcs', 'acr'=>'DCS', 'name'=>'DCS - Ciência do Solo'),
-	array('cod'=>'gsa', 'acr'=>'DSA', 'name'=>'DSA - Ciências da Saúde'),
-	array('cod'=>'gex', 'acr'=>'DEX', 'name'=>'DEX - Ciências Exatas'),
-	array('cod'=>'gef', 'acr'=>'DCF', 'name'=>'DCF - Ciências Florestais'),
-	array('cod'=>'gch', 'acr'=>'DCH', 'name'=>'DCH - Ciências Humanas'),
-	array('cod'=>'gdi', 'acr'=>'DIR', 'name'=>'DIR - Direito'),
-	array('cod'=>'gde', 'acr'=>'DED', 'name'=>'DED - Educação'),
-	array('cod'=>'gfd', 'acr'=>'DEF', 'name'=>'DEF - Educação Física'),
-	array('cod'=>'gne', 'acr'=>'DEG', 'name'=>'DEG - Engenharia'),
-	array('cod'=>'gea', 'acr'=>'GEA', 'name'=>'DEA - Engenharia Agrícola'),
-	array('cod'=>'gel', 'acr'=>'DEL', 'name'=>'DEL - Ensino da Linguagem'),
-	array('cod'=>'get', 'acr'=>'DEB', 'name'=>'DEN - Entomologia'),
-	array('cod'=>'ges', 'acr'=>'DES', 'name'=>'DES - Estatística'),
-	array('cod'=>'gfi', 'acr'=>'DFI', 'name'=>'DFI - Física'),
-	array('cod'=>'gfp', 'acr'=>'DFP', 'name'=>'DFP - Fitopatologia'),
-	array('cod'=>'gga', 'acr'=>'GGA', 'name'=>'DGA - Gestão Agroindustrial'),	
-	array('cod'=>'gnu', 'acr'=>'DNU', 'name'=>'DNU - Nutrição'),
-	array('cod'=>'gmv', 'acr'=>'DMV', 'name'=>'DMV - Medicina Veterinária'),
-	array('cod'=>'gqi', 'acr'=>'DQI', 'name'=>'DQI - Química'),
-	array('cod'=>'grs', 'acr'=>'GRS', 'name'=>'DRS - Recursos Hídricos e Saneamento'),
-	array('cod'=>'gzo', 'acr'=>'DZO', 'name'=>'DZO - Zootecnia'),
-	array('cod'=>'prg', 'acr'=>'PRG', 'name'=>'PRG - Graduação')
+	array('cod'=>'gac,lac', 'acr'=>'DAC/ICET', 'name'=>'Computação Aplicada'),
+	array('cod'=>'gae,eas,tae,eae,lae', 'acr'=>'DAE/FCSA', 'name'=>'Administração e Economia'),
+	array('cod'=>'gag,fit', 'acr'=>'DAG/ESAL', 'name'=>'Agricultura'),
+	array('cod'=>'gam,tam,eam', 'acr'=>'DAM/EENG', 'name'=>'Engenharia Ambiental'),
+	array('cod'=>'gap,eap,lap', 'acr'=>'DAP/FCSA', 'name'=>'Administração Pública'),
+	array('cod'=>'gat,tat,eat', 'acr'=>'DAT/EENG', 'name'=>'Automática'),
+	array('cod'=>'gbi,bio,tbi,ebi,mbi', 'acr'=>'DBI/ICN', 'name'=>'Biologia'),
+	array('cod'=>'gca,ali,tca,eca', 'acr'=>'DCA/ESAL', 'name'=>'Ciência dos Alimentos'),
+	array('cod'=>'gcc,com,lcc', 'acr'=>'DCC/ICET', 'name'=>'Ciência da Computação'),
+	array('cod'=>'gef,cif', 'acr'=>'DCF/ESAL', 'name'=>'Ciências Florestais'),
+	array('cod'=>'gch', 'acr'=>'DCH/FAELCH', 'name'=>'Ciências Humanas'),
+	array('cod'=>'gcs,cso', 'acr'=>'DCS/ESAL', 'name'=>'Ciência do Solo'),
+	array('cod'=>'gea,lea', 'acr'=>'DEA/EENG', 'name'=>'Engenharia Agrícola'),
+	array('cod'=>'gec', 'acr'=>'DEC/ICN', 'name'=>'Ecologia e Conservação'),
+	array('cod'=>'gde,edu', 'acr'=>'DED/FAELCH', 'name'=>'Educação'),
+	array('cod'=>'gfd,efd', 'acr'=>'DEF/FCS', 'name'=>'Educação Física'),
+	array('cod'=>'gne,eng,meg,leg', 'acr'=>'DEG/EENG', 'name'=>'Engenharia'),
+	array('cod'=>'gel', 'acr'=>'DEL/FAELCH', 'name'=>'Estudos da Linguagem'),
+	array('cod'=>'get,ent', 'acr'=>'DEN/ESAL', 'name'=>'Entomologia'),
+	array('cod'=>'ges', 'acr'=>'DES/ICET', 'name'=>'Estatística'),
+	array('cod'=>'gex,cex', 'acr'=>'DEX/ICET', 'name'=>'Ciências Exatas'),
+	array('cod'=>'gfi,lif', 'acr'=>'DFI/ICN', 'name'=>'Física'),
+	array('cod'=>'gfm,tfm,efm,pfm,lmm', 'acr'=>'DFM/ICET', 'name'=>'Educação em Ciências Físicas e Matemáticas'),
+	array('cod'=>'gfp,fip', 'acr'=>'DFP/ESAL', 'name'=>'Fitopatologia'),
+	array('cod'=>'gga', 'acr'=>'DGA/ESAL', 'name'=>'Gestão Agroindustrial'),
+	array('cod'=>'gdi,edi,lir', 'acr'=>'DIR/FCSA', 'name'=>'Direito'),
+	array('cod'=>'gsa', 'acr'=>'DME/FCS', 'name'=>'Medicina'),	
+	array('cod'=>'gmm', 'acr'=>'DMM/ICET', 'name'=>'Matemática e Matemática Aplicada'),
+	array('cod'=>'gmv,vet', 'acr'=>'DMV/FZMV', 'name'=>'Medicina Veterinária'),
+	array('cod'=>'gnu', 'acr'=>'DNU/FCS', 'name'=>'Nutrição'),
+	array('cod'=>'gqi,qui', 'acr'=>'DQI/ICN', 'name'=>'Química'),
+	array('cod'=>'grh,grs,trs,ers', 'acr'=>'DRH/EENG', 'name'=>'Recursos Hídricos'),
+	array('cod'=>'gzo,zoo,tzo,ezo', 'acr'=>'DZO/FZMV', 'name'=>'Zootecnia'),
+	array('cod'=>'gctt,prg', 'acr'=>'PROGRAD', 'name'=>'Graduação')
 ); 
 
 header('Content-Type: application/excel');
@@ -113,7 +138,7 @@ foreach ($departments as $depto) {
 	$co_created = get_amount_created_courses($depto['cod']);
 	$co_used = get_amount_used_courses($depto['cod']);
 	
-	$depname = $depto['name'];
+	$depname = $depto['acr'] . ' - ' . $depto['name'];
 
 	$dep_data = array($depname, $co_created, $co_used);
 	fputcsv($fp, $dep_data);
