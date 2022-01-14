@@ -70,10 +70,10 @@ function get_amount_used_courses($dep) {
 	$courses;
 	
 	if ($category == ALL_CATEGORIES) {
-		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
+		$courses = $DB->get_records_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible', 
 			array('visible'=>'1'));
 	} else {
-		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
+		$courses = $DB->get_records_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE co.visible = :visible AND co.category = :cat', 
 			array('visible'=>'1', 'cat'=>$category));
 	} 
 
@@ -178,34 +178,49 @@ foreach ($departments as $depto) {
 	$all_used = $all_used + $co_used;
 	
 
-	$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
-		$co_created . '</a>';
+//	$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+//		$co_created . '</a>';
 	
-	$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
-		$co_used . '</a>';
+	$link_co_created = $co_created;
+
+//	$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+//		$co_used . '</a>';
 	
-	$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
-		($co_created - $co_used) . '</a>';
+	$link_co_used = $co_used;
+
+//	$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . $depto['cod'] . '>' . 
+//		($co_created - $co_used) . '</a>';
 	
+	$link_co_notused = ($co_created - $co_used);
+
 	$table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
 	
 }
 
-$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.DEPARTMENTS_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
+//$link = '<a href=' . $CFG->wwwroot . '/report/coursestats/main.php?backto='.DEPARTMENTS_PAGE.'&category=' . $category . '&depname=' . get_string('lb_all_dep', 'report_coursestats') . '&dep=' . ALL_DEP . '>' .get_string('lb_all_dep', 'report_coursestats') . '</a>';
+$link = get_string('lb_all_dep', 'report_coursestats');
+
 if ($all_created > 0) {
 	$co_percent = number_format(($all_used / $all_created) * 100, 2) . '%';
 } else {
 	$co_percent = '-';
 }
 
-$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
-	$all_created . '</a>';
+//$link_co_created = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . CREATED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+//	$all_created . '</a>';
 
-$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
-	$all_used . '</a>';
+//$link_co_used = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . USED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+//	$all_used . '</a>';
 
-$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
-	($all_created - $all_used) . '</a>';
+//$link_co_notused = '<a href=' . $CFG->wwwroot . '/report/coursestats/courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP . '>' . 
+//	($all_created - $all_used) . '</a>';
+
+$link_co_created = $all_created;
+
+$link_co_used = $all_used;
+
+$link_co_notused = ($all_created - $all_used);
+
 
 $table->data[] = array($link, $link_co_created, $link_co_used, $link_co_notused, $co_percent);
 

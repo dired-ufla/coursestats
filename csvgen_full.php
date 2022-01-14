@@ -70,10 +70,10 @@ function get_amount_used_courses($dep, $type) {
 	$courses;
 	
 	if ($category == ALL_CATEGORIES) {
-		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible', 
+		$courses = $DB->get_records_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible', 
 		array('type'=>$type, 'visible'=>'1'));
 	} else {
-		$courses = $DB->get_records_sql('SELECT COUNT(*) FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND co.category = :cat', 
+		$courses = $DB->get_records_sql('SELECT * FROM {report_coursestats} cs JOIN {course} co ON co.id = cs.courseid WHERE cs.curr_usage_type = :type AND co.visible = :visible AND co.category = :cat', 
 		array('type'=>$type, 'visible'=>'1', 'cat'=>$category));
 	} 
 
