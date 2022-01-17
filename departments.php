@@ -250,7 +250,10 @@ $link_csv = html_writer::link($url_csv, get_string('link_csv', 'report_coursesta
 $url_csv_full = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen_full.php?category=' . $category);
 $link_csv_full = html_writer::link($url_csv_full, get_string('link_csv_full', 'report_coursestats'));
 
-echo '<p align="center">' . $link_csv . ' | ' . $link_csv_full .'</p>';
+$url_csv_notused = new moodle_url($CFG->wwwroot . '/report/coursestats/csvgen_courses_lst.php?type=' . NOTUSED_COURSES . '&category=' . $category . '&dep=' . ALL_DEP);
+$link_csv_notused = html_writer::link($url_csv_notused, get_string('link_csv_notused', 'report_coursestats'));
+
+echo '<p align="center">' . $link_csv . ' | ' . $link_csv_full . ' | ' . $link_csv_notused .'</p>';
 
 
 echo html_writer::table($table);

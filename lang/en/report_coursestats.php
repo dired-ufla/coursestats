@@ -28,6 +28,7 @@ $string['link_details'] = 'More info';
 $string['link_back'] = 'Back';
 $string['link_csv'] = 'Generate CSV file';
 $string['link_csv_full'] = 'Generate detailed CSV file';
+$string['link_csv_notused'] = 'Generate CSV with courses not used';
 $string['lb_course_name'] = 'Short name';
 $string['lb_usage_type_name'] = 'Usage type';
 $string['lb_usage_type_desc'] = 'Description';
