@@ -99,7 +99,48 @@ $courses = array(
 	array('cod'=>'G033', 'acr'=>'G033', 'name'=>'Engenharia Química'),
 	array('cod'=>'G034', 'acr'=>'G034', 'name'=>'Engenharia de Materiais'),
 	array('cod'=>'G035', 'acr'=>'G035', 'name'=>'Medicina'),
-	array('cod'=>'G036', 'acr'=>'G036', 'name'=>'Pedagogia')
+	array('cod'=>'G036', 'acr'=>'G036', 'name'=>'Pedagogia'),
+	array('cod'=>'PAD', 'acr'=>'PAD', 'name'=>'PPG em Administração'),
+	array('cod'=>'PAP', 'acr'=>'PAP', 'name'=>'PPG em Administração Pública'),
+	array('cod'=>'PFP', 'acr'=>'PFP', 'name'=>'PPG em Agronomia/Fitopatologia'),
+	array('cod'=>'PAG', 'acr'=>'PAG', 'name'=>'PPG em Agronomia/Fitotecnia'),
+	array('cod'=>'PQI', 'acr'=>'PQI', 'name'=>'PPG em Agroquímica'),
+	array('cod'=>'PBI', 'acr'=>'PBI', 'name'=>'PPG em Biotecnologia Vegetal'),
+	array('cod'=>'PBA', 'acr'=>'PBA', 'name'=>'PPG em Botânica Aplicada'),
+	array('cod'=>'PCC', 'acr'=>'PCC', 'name'=>'PPG em Ciência da Computação'),
+	array('cod'=>'PCA', 'acr'=>'PCA', 'name'=>'PPG em Ciência dos Alimentos'),
+	array('cod'=>'PTM', 'acr'=>'PTM', 'name'=>'PPG em Ciência e Tecnologia da Madeira'),
+	array('cod'=>'PGTPA', 'acr'=>'PGTPA', 'name'=>'PPG em Cieĉnia e Tecnologia da Produção Animal'),
+	array('cod'=>'PSA', 'acr'=>'PSA', 'name'=>'PPG em Ciência da Saúde'),
+	array('cod'=>'PMV', 'acr'=>'PMV', 'name'=>'PPG em Ciências Veterinárias'),
+	array('cod'=>'PDS', 'acr'=>'PDS', 'name'=>'PPG em Desenvolvimento Sustentável e Extensão'),
+	array('cod'=>'PEC', 'acr'=>'PEC', 'name'=>'PPG em Ecologia Aplicada'),
+	array('cod'=>'PED', 'acr'=>'PED', 'name'=>'PPG em Educação'),
+	array('cod'=>'PGECA', 'acr'=>'PGECA', 'name'=>'PPG em Educação Científica e Ambiental'),
+	array('cod'=>'PEG', 'acr'=>'PEG', 'name'=>'PPG em Engenharia Agrícola'),
+	array('cod'=>'PEA', 'acr'=>'PEA', 'name'=>'PPG em Engenharia Ambiental'),
+	array('cod'=>'PGALI', 'acr'=>'PGALI', 'name'=>'PPG em Engenharia de Alimentos'),
+	array('cod'=>'PEB', 'acr'=>'PEB', 'name'=>'PPG em Biomateriais'),
+	array('cod'=>'PSI', 'acr'=>'PSI', 'name'=>'PPG em Engenharia de Sistemas e Automação'),
+	array('cod'=>'PCF', 'acr'=>'PCF', 'name'=>'PPG em Engenharia Florestal'),
+	array('cod'=>'PECEM', 'acr'=>'PECEM', 'name'=>'PPG em Ensino de Ciências e Educação Matemática'),
+	array('cod'=>'PEN', 'acr'=>'PEN', 'name'=>'PPG em Entomologia'),
+	array('cod'=>'PEX', 'acr'=>'PEX', 'name'=>'PPG em Estatística e Experimentação Agropecuária'),
+	array('cod'=>'PFIL', 'acr'=>'PFIL', 'name'=>'PPG em Filosofia'),
+	array('cod'=>'PPGF', 'acr'=>'PPGF', 'name'=>'PPG em Física'),
+	array('cod'=>'PFV', 'acr'=>'PFV', 'name'=>'PPG em Fisiologia Vegetal'),
+	array('cod'=>'PGM', 'acr'=>'PGM', 'name'=>'PPG em Genética e Melhoramento de Plantas'),
+	array('cod'=>'PGMP', 'acr'=>'PGMP', 'name'=>'PPG em Genética e Melhoramento de Plantas - Profissional'),
+	array('cod'=>'PPGL', 'acr'=>'PPGL', 'name'=>'PPG em Letras'),
+	array('cod'=>'PMA', 'acr'=>'PMA', 'name'=>'PPG em Matemática - Profissional'),
+	array('cod'=>'PMB', 'acr'=>'PMB', 'name'=>'PPG em Microbiologia Agrícola'),
+	array('cod'=>'PNS', 'acr'=>'PNS', 'name'=>'PPG em Nutrição e Saúde'),
+	array('cod'=>'PAC', 'acr'=>'PAC', 'name'=>'PPG em Plantas Medicinais, Aromáticas e Condimentares'),
+	array('cod'=>'PRH', 'acr'=>'PRH', 'name'=>'PPG em Recursos Hídricos'),
+	array('cod'=>'PTA', 'acr'=>'PTA', 'name'=>'PPG em Tecnologias e Inovações Ambientais'),
+	array('cod'=>'PZO', 'acr'=>'PZO', 'name'=>'PPG em Zootecnia'),
+	array('cod'=>'PRPG', 'acr'=>'PRPG', 'name'=>'Pró-Reitoria de Pós-Graduação'),
+	array('cod'=>'PRP', 'acr'=>'PRP', 'name'=>'Pró-Reitoria de Pós-Graduação')
 ); 
 
 
@@ -115,6 +156,11 @@ fputcsv($fp, $head);
 
 foreach ($courses as $course) {
 	$co_created = get_amount_created_courses($course['cod']);
+
+	if ($co_created == 0) {
+		continue;
+	}
+
 	$co_forum_usage = get_amount_used_courses($course['cod'], FORUM_USAGE_TYPE);
 	$co_repository_usage = get_amount_used_courses($course['cod'], REPOSITORY_USAGE_TYPE);
 	$co_activity_usage = get_amount_used_courses($course['cod'], ACTIVITY_USAGE_TYPE);

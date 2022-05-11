@@ -29,4 +29,4 @@ $plugin->version   = 2022011700;         // The current plugin version (Date: YY
 $plugin->requires  = 2015051100;         // Requires this Moodle version
 $plugin->component = 'report_coursestats'; // Full name of the plugin (used for diagnostics)
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v3.1'; 
+$plugin->release = 'v4.0'; 

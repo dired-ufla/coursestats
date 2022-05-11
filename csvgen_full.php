@@ -136,6 +136,11 @@ fputcsv($fp, $head);
 
 foreach ($departments as $depto) {
 	$co_created = get_amount_created_courses($depto['cod']);
+
+	if ($co_created == 0) {
+		continue;
+	}
+	
 	$co_forum_usage = get_amount_used_courses($depto['cod'], FORUM_USAGE_TYPE);
 	$co_repository_usage = get_amount_used_courses($depto['cod'], REPOSITORY_USAGE_TYPE);
 	$co_activity_usage = get_amount_used_courses($depto['cod'], ACTIVITY_USAGE_TYPE);

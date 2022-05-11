@@ -156,6 +156,11 @@ $percentage_used_courses_array = array();
 
 foreach ($departments as $depto) {
 	$co_created = get_amount_created_courses($depto['cod']);
+
+	if ($co_created == 0) {
+		continue;
+	}
+
 	$co_used = get_amount_used_courses($depto['cod']);
 	
 	$created_courses_array[] = $co_created;
