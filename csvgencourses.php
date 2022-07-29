@@ -108,7 +108,7 @@ $courses = array(
 	array('cod'=>'PBI', 'acr'=>'PBI', 'name'=>'PPG em Biotecnologia Vegetal'),
 	array('cod'=>'PBA', 'acr'=>'PBA', 'name'=>'PPG em Botânica Aplicada'),
 	array('cod'=>'PCC', 'acr'=>'PCC', 'name'=>'PPG em Ciência da Computação'),
-	array('cod'=>'PCA', 'acr'=>'PCA', 'name'=>'PPG em Ciência dos Alimentos'),
+	array('cod'=>'PCC', 'acr'=>'PCS', 'name'=>'PPG em Ciência do Solo'),
 	array('cod'=>'PTM', 'acr'=>'PTM', 'name'=>'PPG em Ciência e Tecnologia da Madeira'),
 	array('cod'=>'PGTPA', 'acr'=>'PGTPA', 'name'=>'PPG em Cieĉnia e Tecnologia da Produção Animal'),
 	array('cod'=>'PSA', 'acr'=>'PSA', 'name'=>'PPG em Ciência da Saúde'),
@@ -134,11 +134,13 @@ $courses = array(
 	array('cod'=>'PPGL', 'acr'=>'PPGL', 'name'=>'PPG em Letras'),
 	array('cod'=>'PMA', 'acr'=>'PMA', 'name'=>'PPG em Matemática - Profissional'),
 	array('cod'=>'PMB', 'acr'=>'PMB', 'name'=>'PPG em Microbiologia Agrícola'),
+	array('cod'=>'PQI', 'acr'=>'PPMQ', 'name'=>'PPG em Multicêntrico em Química de Minas Gerais'),
 	array('cod'=>'PNS', 'acr'=>'PNS', 'name'=>'PPG em Nutrição e Saúde'),
 	array('cod'=>'PAC', 'acr'=>'PAC', 'name'=>'PPG em Plantas Medicinais, Aromáticas e Condimentares'),
 	array('cod'=>'PRH', 'acr'=>'PRH', 'name'=>'PPG em Recursos Hídricos'),
 	array('cod'=>'PTA', 'acr'=>'PTA', 'name'=>'PPG em Tecnologias e Inovações Ambientais'),
 	array('cod'=>'PZO', 'acr'=>'PZO', 'name'=>'PPG em Zootecnia'),
+	array('cod'=>'PCA', 'acr'=>'PCA', 'name'=>'PPG em Ciência dos Alimentos'),
 	array('cod'=>'PRPG', 'acr'=>'PRPG', 'name'=>'Pró-Reitoria de Pós-Graduação'),
 	array('cod'=>'PRP', 'acr'=>'PRP', 'name'=>'Pró-Reitoria de Pós-Graduação')
 ); 

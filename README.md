@@ -20,6 +20,7 @@ Hence, we developed "Courses Usage Statistics"; this is a Moodle report plugin t
 
 ## Releases
 
+- v4.1: update the list of master and phd courses.
 - v4.0: in this version, master and phD programs were added.
 - v3.1: in this version, new departments were added.
 - v3.0: in this version, there are new CSV generators.
